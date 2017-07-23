@@ -1,0 +1,14 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "moduleResolution": "Node",
+    "target": "ES5",
+    "module": "system",
+    "noEmit": true,
+    "removeComments": true,
+    "sourceMap": true
+  },
+  "files": [
+    "src/index.ts"
+  ]
+}
