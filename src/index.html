@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf8">
+  <title>ts-runtime Playground</title>
+  <link rel="icon" href="assets/favicon.ico">
+  <link rel="stylesheet" href="style.css?<!-- @echo VERSION -->">
+</head>
+
+<body>
+  <div id="loading">
+    <span class="loader">
+      <span class="loader-inner"></span>
+    </span>
+  </div>
+  <div id="header" class="grid grid-pad">
+    <div class="col-1-2">
+      <div id="title">
+        Playground for TypeScript runtime type checks.
+      </div>
+    </div>
+    <div class="col-1-2">
+      <div id="github">
+        <a href="https://github.com/fabiandev/typescript-playground" target="_blank" title="ts-runtime on GitHub">
+            typescript-playground on <img id="ghlogo" src="assets/ghlogo.png" alt="GitHub Logo" border="0">
+          </a>
+      </div>
+    </div>
+  </div>
+  <div id="playground" class="grid grid-pad">
+    <div class="col-1-2 editor-container">
+      <div class="editor-footer" id="options">
+        <input type="checkbox" name="strictNullChecks" value="true"> strictNullChecks
+      </div>
+      <div class="editor" id="editor-ts"></div>
+    </div>
+    <div class="col-1-2 editor-container">
+      <div id="processing">
+        <div class="spinner">
+          <div class="double-bounce1"></div>
+          <div class="double-bounce2"></div>
+        </div>
+      </div>
+      <div class="editor-footer" id="run-code">Run in new window.</div>
+      <div class="editor" id="editor-js"></div>
+    </div>
+  </div>
+
+  <script src="<!-- @echo MONACO_LOADER -->?<!-- @echo VERSION -->"></script>
+  <script src="<!-- @echo BUNDLE_NAME -->?<!-- @echo VERSION -->"></script>
+</body>
+
+</html>
