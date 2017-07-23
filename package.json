@@ -1,0 +1,40 @@
+{
+  "name": "typescript-playground",
+  "version": "0.0.1",
+  "description": "TypeScript Playground",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/lodash.debounce": "^4.0.2",
+    "del": "^3.0.0",
+    "gulp": "gulpjs/gulp#4.0",
+    "gulp-clean-css": "^3.7.0",
+    "gulp-less": "^3.3.2",
+    "gulp-preprocess": "^2.0.0",
+    "gulp-sourcemaps": "^2.6.0",
+    "lodash.debounce": "^4.0.8",
+    "monaco-editor": "^0.9.0",
+    "normalize.css": "^7.0.0",
+    "source-map-loader": "^0.2.1",
+    "ts-loader": "^2.3.1",
+    "typescript": "^2.4.2",
+    "webpack": "^3.3.0",
+    "webpack-stream": "^3.2.0"
+  },
+  "scripts": {
+    "build": "node_modules/.bin/gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fabiandev/typescript-playground.git"
+  },
+  "keywords": [
+    "typescript",
+    "playground"
+  ],
+  "author": "Fabian Pirklbauer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fabiandev/typescript-playground/issues"
+  },
+  "homepage": "https://github.com/fabiandev/typescript-playground#readme"
+}
