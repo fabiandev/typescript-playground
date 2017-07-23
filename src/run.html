@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <base id="base" href="__BASE__">
+  <meta charset="utf8">
+  <title>ts-runtime Playground (run code)</title>
+  <link rel="icon" href="assets/favicon.ico">
+  <link rel="stylesheet" href="style.css?__VERSION__">
+</head>
+
+<body>
+  <div id="console-wrapper">
+    <div id="console" class="grid grid-pad">
+      <div class="col-1-1">
+        <div id="console-heading">
+          Console Output:
+        </div>
+      </div>
+      <div class="col-1-1">
+        <div class="console" id="console-content"></div>
+      </div>
+    </div>
+  </div>
+  <div id="loading-window">
+    <div class="spinner-window">
+      <div class="double-bounce1"></div>
+      <div class="double-bounce2"></div>
+    </div>
+  </div>
+
+  <script>
+  var __getElement = __getElement || function __getElement() {
+    return document.getElementById('console-content');
+  }
+
+  var __clearConsole = __clearConsole || function __clearConsole() {
+    __getElement().innerHTML = '';
+  }
+
+  var __wrapConsoleText = __wrapConsoleText || function __wrapConsoleText(type, text) {
+    return '<span class="log-'+type+'"><span class="icon-'+type+'"></span>'+text+'</span>';
+  }
+
+  var __updateConsole = __updateConsole || function __updateConsole(type, message, ...optionalParams) {
+    var text = __logToText(message);
+
+    for (var param of optionalParams) {
+      text += '\n   ' + __logToText(param);
+    }
+
+    text = __wrapConsoleText(type, text);
+
+    __getElement().innerHTML += text + '\n';
+  }
+
+  var __logToText = __logToText || function __logToText(message) {
+    if (typeof message === 'object' && message !== null) {
+      return JSON.stringify(message);
+    }
+
+    return __escape(message);
+  }
+
+  var __escape = __escape || function __escape(text) {
+    var div = document.createElement('div');
+    div.innerText = text;
+    return div.innerHTML;
+  }
+
+    var __log = __log || function __log(data) {
+    var message = data.data.message;
+    var optionalParams = data.data.optionalParams;
+    if (data.log) data.log(message, ...optionalParams);
+    __updateConsole(data.type, message, ...optionalParams);
+  }
+
+  var __fadeOut = __fadeOut || function __fadeOut(target) {
+    target.style.opacity = '1';
+
+    var fadeEffect = setInterval(() => {
+      if (parseFloat(target.style.opacity) < 0.05) {
+        clearInterval(fadeEffect);
+        target.style.opacity = '0';
+        target.style.display = 'none';
+      } else {
+        target.style.opacity = (parseFloat(target.style.opacity) - 0.02) + '';
+      }
+    }, 5);
+  }
+
+  var __originalLog = __originalLog || console.log;
+  console.log = function log(message, ...optionalParams) {
+    __log({
+      name: 'log',
+      type: 'log',
+      log: __originalLog,
+      data: {
+        message,
+        optionalParams
+      }
+    });
+  }
+
+  var __originalInfo = __originalInfo || console.info;
+  console.info = function info(message, ...optionalParams) {
+    __log({
+      name: 'log',
+      type: 'info',
+      log: __originalInfo,
+      data: {
+        message,
+        optionalParams
+      }
+    });
+  }
+
+  var __originalWarn = __originalWarn || console.warn;
+  console.warn = function warn(message, ...optionalParams) {
+    __log({
+      name: 'log',
+      type: 'warn',
+      log: __originalWarn,
+      data: {
+        message,
+        optionalParams
+      }
+    });
+  }
+
+  var __originalError = __originalError || console.error;
+  console.error = function error(message, ...optionalParams) {
+    __log({
+      name: 'log',
+      type: 'error',
+      log: __originalError,
+      data: {
+        message,
+        optionalParams
+      }
+    });
+  }
+
+  window.onerror = function(message, url, lineNumber) {
+    __log({
+      name: 'error',
+      type: 'error',
+      // log: __originalError,
+      data: {
+        message,
+        optionalParams: []
+      }
+    });
+  }
+  </script>
+
+  <script id="code">
+  (function() {
+    __CODE__
+  })();
+  </script>
+  <script>__fadeOut(document.getElementById('loading-window'));</script>
+</body>
+
+</html>

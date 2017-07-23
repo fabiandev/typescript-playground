@@ -1,7 +1,12 @@
-/// <reference path="../node_modules/monaco-editor/monaco.d.ts" />
+/// <reference path="./typings.d.ts" />
 
 import * as ts from 'typescript';
 import debounce = require('lodash.debounce');
+import runWindowHtml = require('./run.html');
+
+const runWindowCode = runWindowHtml
+  .replace(new RegExp(/__BASE__/), window.location.href)
+  .replace(new RegExp(/__VERSION__/g), '/* @echo VERSION */');
 
 let tsEditor: monaco.editor.IStandaloneCodeEditor;
 let jsEditor: monaco.editor.IStandaloneCodeEditor;
@@ -17,20 +22,20 @@ const _consoleContent = document.getElementById('console-content');
 
 let defaultOptions: monaco.languages.typescript.CompilerOptions;
 
-function bootstrap() {
+function bootstrap(): void {
   const win = window as any;
   win.require.config({ paths: { vs: '/* @echo MONACO_LOCATION */' } });
 
   (window as any).MonacoEnvironment = {
-		getWorkerUrl: (workerId, label) => {
-			return 'proxy.js';
-		}
-	};
+    getWorkerUrl: (workerId, label) => {
+      return 'proxy.js';
+    }
+  };
 
   win.require(['/* @echo MONACO_ENTRY */'], init);
 }
 
-function init() {
+function init(): void {
   setDefaultOptions();
   updateEditorOptions();
   updateCompilerOptions();
@@ -67,24 +72,29 @@ function init() {
     }
   });
 
-  monaco.languages.typescript.getTypeScriptWorker()
-    .then(worker => worker(tsEditor.getModel().uri))
-    .then(worker => service = worker)
-    .then(ready);
+  ready();
 }
 
-function ready() {
+function ready(): void {
   tsEditor.onDidChangeModelContent(debounce(onCodeChange, 100));
   _runCode.onclick = runCode;
   fadeOut(_loading);
 }
 
-function getOptions() {
+function getOptions(): monaco.languages.typescript.CompilerOptions {
   return JSON.parse(JSON.stringify((window as any).compilerOptions));
 }
 
-function onCodeChange(event: monaco.editor.IModelContentChangedEvent) {
-  service.getEmitOutput(tsEditor.getModel().uri.toString())
+function getService(): monaco.Promise<any> {
+  return monaco.languages.typescript.getTypeScriptWorker()
+    .then(worker => worker(tsEditor.getModel().uri))
+}
+
+function onCodeChange(event: monaco.editor.IModelContentChangedEvent): void {
+  getService()
+    .then(service => {
+      return service.getEmitOutput(tsEditor.getModel().uri.toString())
+    })
     .then((result: ts.EmitOutput) => {
       if (result.emitSkipped) {
         return false;
@@ -97,23 +107,23 @@ function onCodeChange(event: monaco.editor.IModelContentChangedEvent) {
       return result.outputFiles[0].text;
     })
     .then(text => {
-      if (text !== undefined) {
+      if (text) {
         updateJsEditor(text);
       }
     });
 }
 
-function updateJsEditor(text: string) {
+function updateJsEditor(text: string): void {
   jsEditor.getModel().setValue(text);
 }
 
-function updateCompilerOptions() {
+function updateCompilerOptions(): void {
   const options = getOptions();
   options.allowNonTsExtensions = true;
   monaco.languages.typescript.typescriptDefaults.setCompilerOptions(options);
 }
 
-function setDefaultOptions() {
+function setDefaultOptions(): void {
   defaultOptions = {
     noImplicitAny: false,
     strictNullChecks: false,
@@ -129,11 +139,11 @@ function setDefaultOptions() {
   (window as any).compilerOptions = defaultOptions;
 }
 
-function updateEditorOptions() {
+function updateEditorOptions(): void {
 
 }
 
-function clearConsole() {
+function clearConsole(): void {
   _consoleContent.innerHTML = '';
 }
 
@@ -149,7 +159,7 @@ function updateConsole(type: string, message: any, ...optionalParams: any[]): vo
   _consoleContent.innerHTML += `${text}\n`;
 }
 
-function logToText(message: any) {
+function logToText(message: any): string {
   if (typeof message === 'object' && message !== null) {
     return JSON.stringify(message);
   }
@@ -167,7 +177,7 @@ function escape(text: string): string {
   return div.innerHTML;
 }
 
-function fadeOut(target: HTMLElement) {
+function fadeOut(target: HTMLElement): void {
   target.style.opacity = '1';
 
   const fadeEffect = setInterval(() => {
@@ -195,18 +205,31 @@ function find<T>(input: T[], test: (element: T) => boolean): T {
   return null;
 }
 
-function showProcessingIndicator() {
+function showProcessingIndicator(): void {
   _processing.style.display = 'inline-block';
 }
 
-function hideProcessingIndicator() {
+function hideProcessingIndicator(): void {
   _processing.style.display = 'none';
 }
 
-function runCode() {
-  setTimeout(() => {
+function getWindowCode(): string {
+  return runWindowCode.replace(/__CODE__/, jsEditor.getValue())
+}
 
-  }, 100);
+function runCode(): void {
+  let win: Window;
+
+  if (!runWindow || runWindow.closed) {
+    win = window.open('', '', 'width=800,height=600');
+    runWindow = win;
+  } else {
+    win = runWindow;
+  }
+
+  win.document.open()
+  win.document.write(getWindowCode());
+  win.document.close();
 }
 
 bootstrap();
