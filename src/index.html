@@ -17,7 +17,44 @@
   <div id="header" class="grid grid-pad">
     <div class="col-1-2">
       <div id="title">
-        Playground for TypeScript runtime type checks.
+        TypeScript Playground
+        <span id="options-toggle" class="icon-cog"></span>
+        <div id="options">
+          <div class="option">
+            <select name="target" class="compilerOption">
+              <option value="1">ES5</option>
+              <option value="2">ES2015</option>
+              <option value="3">ES2016</option>
+              <option value="4">ES2017</option>
+              <option value="5">ESNext</option>
+            </select>
+            target
+          </div>
+          <div class="option">
+            <input class="compilerOption" type="checkbox" name="noImplicitAny" value="true">
+            noImplicitAny
+          </div>
+          <div class="option">
+            <input class="compilerOption" type="checkbox" name="strictNullChecks" value="true">
+            strictNullChecks
+          </div>
+          <div class="option">
+            <input class="compilerOption" type="checkbox" name="noImplicitReturns" value="true">
+            noImplicitReturns
+          </div>
+          <div class="option">
+            <input class="compilerOption" type="checkbox" name="noImplicitThis" value="true">
+            noImplicitThis
+          </div>
+          <div class="option">
+            <input class="compilerOption" type="checkbox" name="removeComments" value="true">
+            removeComments
+          </div>
+          <div class="option">
+            <input class="compilerOption" type="checkbox" name="experimentalDecorators" value="true">
+            experimentalDecorators
+          </div>
+        </div>
       </div>
     </div>
     <div class="col-1-2">
@@ -30,9 +67,6 @@
   </div>
   <div id="playground" class="grid grid-pad">
     <div class="col-1-2 editor-container">
-      <div class="editor-footer" id="options">
-        <input type="checkbox" name="strictNullChecks" value="true"> strictNullChecks
-      </div>
       <div class="editor" id="editor-ts"></div>
     </div>
     <div class="col-1-2 editor-container">
