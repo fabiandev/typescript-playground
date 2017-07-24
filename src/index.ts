@@ -1,5 +1,3 @@
-/// <reference path="./typings.d.ts" />
-
 import * as ts from 'typescript';
 import debounce = require('lodash.debounce');
 import runWindowHtml = require('./run.html');
@@ -228,7 +226,8 @@ function runCode(): void {
   win.document.close();
 }
 
-function toggleOptions(): void {
+function toggleOptions(this: HTMLElement, ev: Event): void {
+  this.classList.toggle('active');
   _options.classList.toggle('visible');
 }
 
