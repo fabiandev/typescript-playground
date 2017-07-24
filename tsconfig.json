@@ -6,9 +6,13 @@
     "module": "system",
     "noEmit": true,
     "removeComments": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/typings"
+    ]
   },
-  "files": [
-    "src/index.ts"
+  "include": [
+    "src/**/*"
   ]
 }

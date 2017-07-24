@@ -3,6 +3,7 @@ const css = require('gulp-clean-css');
 const del = require('del');
 const less = require('gulp-less');
 const preprocess = require('gulp-preprocess');
+const rename = require('gulp-rename');
 const sourcemaps = require('gulp-sourcemaps');
 const webpack = require('webpack-stream');
 const wp = require('webpack');
@@ -41,10 +42,11 @@ function scripts() {
 }
 
 function styles() {
-  return gulp.src([`${config.paths.src}/style.less`])
+  return gulp.src([`${config.paths.src}/styles/index.less`])
     .pipe(sourcemaps.init())
     .pipe(less())
     .pipe(css())
+    .pipe(rename({ basename: 'style' }))
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(config.paths.dest));
 }
