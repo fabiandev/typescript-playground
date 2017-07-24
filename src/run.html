@@ -87,8 +87,9 @@
     var type = data.type;
     var optionalParams = data.data.optionalParams;
     var params = optionalParams;
-    params.unshift(type, message);
+    params.unshift(message);
     if (data.log) data.log.apply(this, params);
+    params.unshift(type);
     tsp.updateConsole.apply(this, params);
   }
 

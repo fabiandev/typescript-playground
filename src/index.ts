@@ -55,7 +55,7 @@ function init(): void {
 
   jsEditor = monaco.editor.create(_editorJs, {
     value: [
-      'var foo = "Hello World!";',
+      '',
       ''
     ].join('\n'),
     language: 'javascript',
@@ -86,6 +86,7 @@ function ready(): void {
   _optionsToggle.onclick = toggleOptions;
   _runCode.onclick = runCode;
   initOptions();
+  onCodeChange();
   fadeOut(_loading);
 }
 
