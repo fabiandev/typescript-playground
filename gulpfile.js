@@ -42,7 +42,7 @@ function scripts() {
 }
 
 function styles() {
-  return gulp.src([`${config.paths.src}/styles/index.less`])
+  return gulp.src([`${config.paths.src}/style.less`])
     .pipe(sourcemaps.init())
     .pipe(less())
     .pipe(css())

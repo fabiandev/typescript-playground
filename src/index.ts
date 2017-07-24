@@ -21,6 +21,22 @@ const _options = document.getElementById('options');
 
 let defaultOptions: monaco.languages.typescript.CompilerOptions;
 
+function setDefaultOptions(): void {
+  defaultOptions = {
+    noImplicitAny: false,
+    strictNullChecks: false,
+    noImplicitReturns: false,
+    noImplicitThis: false,
+    removeComments: false,
+    experimentalDecorators: true,
+    emitDecoratorMetadata: false,
+    allowNonTsExtensions: true,
+    target: monaco.languages.typescript.ScriptTarget.ES5
+  };
+
+  (window as any).compilerOptions = defaultOptions;
+}
+
 function bootstrap(): void {
   const win = window as any;
   win.require.config({ paths: { vs: '/* @echo MONACO_LOCATION */' } });
@@ -98,7 +114,7 @@ function initOptions() {
     if (defaultOptions.hasOwnProperty(inputs[i].name)) {
       if (inputs[i] instanceof HTMLInputElement) {
         (inputs[i] as HTMLInputElement).checked = !!defaultOptions[inputs[i].name];
-      } else if(inputs[i] instanceof HTMLSelectElement) {
+      } else if (inputs[i] instanceof HTMLSelectElement) {
         (inputs[i] as HTMLSelectElement).value = `${defaultOptions[inputs[i].name]}`;
       }
     }
@@ -122,15 +138,6 @@ function onOptionChange(this: HTMLInputElement | HTMLSelectElement, ev: Event): 
 
   updateCompilerOptions();
   onCodeChange();
-}
-
-function getOptions(): monaco.languages.typescript.CompilerOptions {
-  return JSON.parse(JSON.stringify((window as any).compilerOptions));
-}
-
-function getService(): monaco.Promise<any> {
-  return monaco.languages.typescript.getTypeScriptWorker()
-    .then(worker => worker(tsEditor.getModel().uri))
 }
 
 function onCodeChange(event?: monaco.editor.IModelContentChangedEvent): void {
@@ -159,58 +166,6 @@ function onCodeChange(event?: monaco.editor.IModelContentChangedEvent): void {
     });
 }
 
-function updateJsEditor(text: string): void {
-  jsEditor.getModel().setValue(text);
-}
-
-function updateCompilerOptions(): void {
-  const options = getOptions();
-  options.allowNonTsExtensions = true;
-  monaco.languages.typescript.typescriptDefaults.setCompilerOptions(options);
-}
-
-function setDefaultOptions(): void {
-  defaultOptions = {
-    noImplicitAny: false,
-    strictNullChecks: false,
-    noImplicitReturns: false,
-    noImplicitThis: false,
-    removeComments: false,
-    experimentalDecorators: true,
-    emitDecoratorMetadata: false,
-    allowNonTsExtensions: true,
-    target: monaco.languages.typescript.ScriptTarget.ES5
-  };
-
-  (window as any).compilerOptions = defaultOptions;
-}
-
-function fadeOut(target: HTMLElement): void {
-  target.style.opacity = '1';
-
-  const fadeEffect = setInterval(() => {
-    if (parseFloat(target.style.opacity) < 0.05) {
-      clearInterval(fadeEffect);
-      target.style.opacity = '0';
-      target.style.display = 'none';
-    } else {
-      target.style.opacity = `${parseFloat(target.style.opacity) - 0.01}`;
-    }
-  }, 5);
-}
-
-function showProcessingIndicator(): void {
-  _processing.style.display = 'inline-block';
-}
-
-function hideProcessingIndicator(): void {
-  _processing.style.display = 'none';
-}
-
-function getWindowCode(): string {
-  return runWindowCode.replace(/__CODE__/, jsEditor.getValue())
-}
-
 function runCode(): void {
   let win: Window;
 
@@ -226,9 +181,54 @@ function runCode(): void {
   win.document.close();
 }
 
+function updateJsEditor(text: string): void {
+  jsEditor.getModel().setValue(text);
+}
+
+function updateCompilerOptions(): void {
+  const options = getOptions();
+  options.allowNonTsExtensions = true;
+  monaco.languages.typescript.typescriptDefaults.setCompilerOptions(options);
+}
+
+function getWindowCode(): string {
+  return runWindowCode.replace(/__CODE__/, jsEditor.getValue())
+}
+
+function getOptions(): monaco.languages.typescript.CompilerOptions {
+  return JSON.parse(JSON.stringify((window as any).compilerOptions));
+}
+
+function getService(): monaco.Promise<any> {
+  return monaco.languages.typescript.getTypeScriptWorker()
+    .then(worker => worker(tsEditor.getModel().uri))
+}
+
 function toggleOptions(this: HTMLElement, ev: Event): void {
   this.classList.toggle('active');
   _options.classList.toggle('visible');
+}
+
+function showProcessingIndicator(): void {
+  _processing.style.display = 'inline-block';
+}
+
+function hideProcessingIndicator(): void {
+  _processing.style.display = 'none';
+}
+
+function fadeOut(target: HTMLElement, interval = 5, reduce = 0.01): void {
+  target.style.opacity = '1';
+
+  const fadeEffect = setInterval(() => {
+    if (parseFloat(target.style.opacity) < 0.05) {
+      clearInterval(fadeEffect);
+      target.style.opacity = '0';
+      target.style.display = 'none';
+    } else {
+      target.style.opacity = `${parseFloat(target.style.opacity) - reduce}`;
+    }
+  }, interval);
 }
 
 bootstrap();
