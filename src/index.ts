@@ -9,7 +9,6 @@ const runWindowCode = runWindowHtml
 let tsEditor: monaco.editor.IStandaloneCodeEditor;
 let jsEditor: monaco.editor.IStandaloneCodeEditor;
 let runWindow: Window;
-let service: any;
 
 const _editorJs = document.getElementById('editor-js');
 const _editorTs = document.getElementById('editor-ts');
@@ -20,6 +19,7 @@ const _optionsToggle = document.getElementById('options-toggle');
 const _options = document.getElementById('options');
 
 let defaultOptions: monaco.languages.typescript.CompilerOptions;
+(window as any).tsp = {};
 
 function setDefaultOptions(): void {
   defaultOptions = {
@@ -33,8 +33,6 @@ function setDefaultOptions(): void {
     allowNonTsExtensions: true,
     target: monaco.languages.typescript.ScriptTarget.ES5
   };
-
-  (window as any).compilerOptions = defaultOptions;
 }
 
 function bootstrap(): void {
@@ -52,6 +50,7 @@ function bootstrap(): void {
 
 function init(): void {
   setDefaultOptions();
+  expose();
   updateCompilerOptions();
 
   tsEditor = monaco.editor.create(_editorTs, {
@@ -104,6 +103,16 @@ function ready(): void {
   fadeOut(_loading);
 }
 
+function expose() {
+  (window as any).tsp.compilerOptions = defaultOptions;
+  (window as any).tsp.compile = onCodeChange;
+  (window as any).tsp.run = runCode;
+  (window as any).tsp.sync = () => {
+    initOptions();
+    updateCompilerOptions();
+  };
+}
+
 function initOptions() {
   const inputs = document
     .getElementById('options')
@@ -111,7 +120,7 @@ function initOptions() {
     NodeListOf<HTMLInputElement | HTMLSelectElement>;
 
   for (let i = 0; i < inputs.length; i++) {
-    if (defaultOptions.hasOwnProperty(inputs[i].name)) {
+    if ((window as any).tsp.compilerOptions.hasOwnProperty(inputs[i].name)) {
       if (inputs[i] instanceof HTMLInputElement) {
         (inputs[i] as HTMLInputElement).checked = !!defaultOptions[inputs[i].name];
       } else if (inputs[i] instanceof HTMLSelectElement) {
@@ -134,7 +143,7 @@ function onOptionChange(this: HTMLInputElement | HTMLSelectElement, ev: Event): 
     value = this.value;
   }
 
-  (window as any).compilerOptions[this.name] = value;
+  (window as any).tsp.compilerOptions[this.name] = value;
 
   updateCompilerOptions();
   onCodeChange();
@@ -196,7 +205,7 @@ function getWindowCode(): string {
 }
 
 function getOptions(): monaco.languages.typescript.CompilerOptions {
-  return JSON.parse(JSON.stringify((window as any).compilerOptions));
+  return JSON.parse(JSON.stringify((window as any).tsp.compilerOptions));
 }
 
 function getService(): monaco.Promise<any> {

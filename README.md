@@ -8,7 +8,14 @@ See the playground in action: https://fabiandev.github.io/typescript-playground
 
 ## Compiler Options
 
-The playground supports some compiler options out of the box. Anyway, a variable `compilerOptions` is exposed to the global `window` object, where it is possible to set any option not included in the UI.
+The playground supports some compiler options out of the box. Anyway, a property `tsp` is exposed to the global `window` object, where it is possible to set any option not supported by the UI:
+
+```js
+tsp.compilerOptions.removeComments = true;
+tsp.sync(); // Sync options with the editor
+tsp.compile(); // Compile TypeScript code
+tsp.run(); // Run target code in new window
+```
 
 ## Development Setup
 
