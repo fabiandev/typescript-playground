@@ -47,9 +47,9 @@ You can set the configuration for the build in `config.js`:
 
 ### Build
 
-To start a build run `yarn build`.
+To start a build, run `yarn build`.
 
-> `npm run build`is also a possible command.
+> `npm run build` is also a possible command.
 
 ### Watch
 
@@ -57,7 +57,7 @@ To run tasks while developing, use `yarn watch`.
 
 ### Serve
 
-With `yarn serve` a dev server with live reload can be started to preview the project with.
+With `yarn serve` a dev server with live reload can be started, to preview the project locally.
 
 ## Credits
 
