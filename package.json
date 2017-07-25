@@ -5,6 +5,7 @@
   "dependencies": {},
   "devDependencies": {
     "@types/lodash.debounce": "^4.0.2",
+    "add": "^2.0.6",
     "del": "^3.0.0",
     "gulp": "gulpjs/gulp#4.0",
     "gulp-clean-css": "^3.7.0",
@@ -12,6 +13,7 @@
     "gulp-preprocess": "^2.0.0",
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^2.6.0",
+    "live-server": "^1.2.0",
     "lodash.debounce": "^4.0.8",
     "monaco-editor": "^0.9.0",
     "normalize.css": "^7.0.0",
@@ -20,10 +22,13 @@
     "ts-loader": "^2.3.1",
     "typescript": "^2.4.2",
     "webpack": "^3.3.0",
-    "webpack-stream": "^3.2.0"
+    "webpack-stream": "^3.2.0",
+    "yarn": "^0.27.5"
   },
   "scripts": {
-    "build": "node_modules/.bin/gulp build"
+    "build": "node_modules/.bin/gulp build",
+    "watch": "node_modules/.bin/gulp watch",
+    "serve": "node_modules/.bin/live-server ./docs"
   },
   "repository": {
     "type": "git",

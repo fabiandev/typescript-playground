@@ -47,14 +47,26 @@ function styles() {
     .pipe(less())
     .pipe(css())
     .pipe(rename({ basename: 'style' }))
+    .pipe(preprocess({ context: config.replace }))
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(config.paths.dest));
 }
 
+function watch() {
+  gulp.watch(`${config.paths.src}/**/*.js`, gulp.parallel(copy));
+  gulp.watch([`${config.paths.src}/**/*.ts`, `${config.paths.src}/run.html`], gulp.parallel(scripts));
+  gulp.watch(`${config.paths.src}/index.html`, gulp.parallel(html));
+  gulp.watch(`${config.paths.src}/**/*.less`, gulp.parallel(styles));
+  gulp.watch(`${config.paths.src}/assets/**/*`, gulp.parallel(assets));
+}
+
 const build = gulp.series(
   clean,
-  gulp.parallel(assets, copy, html, scripts, styles)
+  gulp.parallel(
+    assets, copy, html, scripts, styles
+  )
 );
 
 gulp.task('build', build);
+gulp.task('watch', gulp.series(build, watch));
 gulp.task('default', build);

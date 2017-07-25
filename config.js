@@ -63,8 +63,7 @@ config.webpack = {
         exclude: /(node_modules|(\.d\.ts$))/,
         loader: 'ts-loader',
         options: config.typescript
-      },
-      {
+      }, {
         test: /\.html/,
         use: 'raw-loader'
       }
