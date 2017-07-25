@@ -50,7 +50,7 @@ To run tasks while developing, use `yarn watch`.
 
 ### Serve
 
-With `yarn serve` a dev server can be started to preview the project with.
+With `yarn serve` a dev server with live reload can be started to preview the project with.
 
 ## Credits
 
