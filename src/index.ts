@@ -122,7 +122,11 @@ function initOptions() {
   for (let i = 0; i < inputs.length; i++) {
     if ((window as any).tsp.compilerOptions.hasOwnProperty(inputs[i].name)) {
       if (inputs[i] instanceof HTMLInputElement) {
-        (inputs[i] as HTMLInputElement).checked = !!defaultOptions[inputs[i].name];
+        if ((inputs[i] as HTMLInputElement).type === 'checkbox') {
+          (inputs[i] as HTMLInputElement).checked = !!defaultOptions[inputs[i].name];
+        } else if((inputs[i] as HTMLInputElement).type === 'text') {
+          (inputs[i] as HTMLInputElement).value = `${defaultOptions[inputs[i].name]}`;
+        }
       } else if (inputs[i] instanceof HTMLSelectElement) {
         (inputs[i] as HTMLSelectElement).value = `${defaultOptions[inputs[i].name]}`;
       }
@@ -133,10 +137,14 @@ function initOptions() {
 }
 
 function onOptionChange(this: HTMLInputElement | HTMLSelectElement, ev: Event): any {
-  let value;
+  let value = (window as any).tsp.compilerOptions[this.name];
 
   if (this instanceof HTMLInputElement) {
-    value = !!(this as HTMLInputElement).checked;
+    if ((this as HTMLInputElement).type === 'checkbox') {
+      value = !!(this as HTMLInputElement).checked;
+    } else if((this as HTMLInputElement).type === 'text') {
+      value = (this as HTMLInputElement).value;
+    }
   } else if (this instanceof HTMLSelectElement) {
     value = (this as HTMLSelectElement).value;
   } else {
