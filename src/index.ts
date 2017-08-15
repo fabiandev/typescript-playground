@@ -178,8 +178,12 @@ function onCodeChange(event?: monaco.editor.IModelContentChangedEvent): void {
     .then(text => {
       if (text) {
         updateJsEditor(text);
-        hideProcessingIndicator();
       }
+
+      return !!text;
+    })
+    .then(updated => {
+      hideProcessingIndicator();
     });
 }
 
