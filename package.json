@@ -22,8 +22,7 @@
     "ts-loader": "^2.3.1",
     "typescript": "^2.4.2",
     "webpack": "^3.3.0",
-    "webpack-stream": "^3.2.0",
-    "yarn": "^0.27.5"
+    "webpack-stream": "^3.2.0"
   },
   "scripts": {
     "build": "node_modules/.bin/gulp build",
