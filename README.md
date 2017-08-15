@@ -43,7 +43,7 @@ You can set the configuration for the build in `config.js`:
 | monaco     | Location of the editor                                      |
 | typescript | Options for building TypeScript files                       |
 | webpack    | The settings for bundling the app                           |
-| replace    | Data for preprocess, applied to all files other than assets |
+| replace    | Data for [preprocess](https://github.com/jsoverson/preprocess), applied to all files other than assets |
 
 ### Build
 
