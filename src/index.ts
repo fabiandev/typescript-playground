@@ -176,7 +176,7 @@ function onCodeChange(event?: monaco.editor.IModelContentChangedEvent): void {
       return result.outputFiles[0].text;
     })
     .then(text => {
-      if (text) {
+      if (typeof text === 'string') {
         updateJsEditor(text);
       }
 
