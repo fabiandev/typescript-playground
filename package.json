@@ -15,7 +15,7 @@
     "gulp-sourcemaps": "^2.6.0",
     "live-server": "^1.2.0",
     "lodash.debounce": "^4.0.8",
-    "monaco-editor": "^0.9.0",
+    "monaco-editor": "^0.10.0",
     "normalize.css": "^7.0.0",
     "raw-loader": "^0.5.1",
     "source-map-loader": "^0.2.1",
