@@ -28,7 +28,7 @@ function setDefaultOptions(): void {
     noImplicitReturns: false,
     noImplicitThis: false,
     removeComments: false,
-    experimentalDecorators: true,
+    experimentalDecorators: false,
     emitDecoratorMetadata: false,
     allowNonTsExtensions: true,
     target: monaco.languages.typescript.ScriptTarget.ES5
