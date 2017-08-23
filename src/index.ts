@@ -13,6 +13,7 @@ let runWindow: Window;
 const _editorJs = document.getElementById('editor-js');
 const _editorTs = document.getElementById('editor-ts');
 const _runCode = document.getElementById('run-code');
+const _runText = document.getElementById('run-text')
 const _loading = document.getElementById('loading');
 const _processing = document.getElementById('processing');
 const _optionsToggle = document.getElementById('options-toggle');
@@ -99,6 +100,7 @@ function ready(): void {
   _optionsToggle.onclick = toggleOptions;
   _runCode.onclick = runCode;
   initOptions();
+  window.onkeydown = keyBindings;
   onCodeChange();
   fadeOut(_loading);
 }
@@ -106,7 +108,7 @@ function ready(): void {
 function expose() {
   (window as any).tsp.compilerOptions = defaultOptions;
   (window as any).tsp.compile = onCodeChange;
-  (window as any).tsp.run = runCode;
+  (window as any).tsp.run = () => runCode();
   (window as any).tsp.sync = () => {
     initOptions();
     updateCompilerOptions();
@@ -133,6 +135,16 @@ function initOptions() {
     }
 
     inputs[i].onchange = onOptionChange;
+  }
+}
+
+function keyBindings(this: Window, ev: KeyboardEvent) {
+  if (ev.ctrlKey && ev.which === 82 /* r */) {
+    runCode();
+  }
+
+  if ((ev.ctrlKey || ev.metaKey) && ev.which === 83 /* s */) {
+    ev.preventDefault();
   }
 }
 
@@ -191,15 +203,30 @@ function runCode(): void {
   let win: Window;
 
   if (!runWindow || runWindow.closed) {
+    windowOpened();
     win = window.open('', '', 'width=800,height=600');
     runWindow = win;
   } else {
     win = runWindow;
+    windowRefreshed();
   }
 
   win.document.open()
   win.document.write(getWindowCode());
   win.document.close();
+  win.onunload = windowUnloaded;
+}
+
+function windowOpened() {
+  _runText.innerText = 'Run in window';
+}
+
+function windowRefreshed() {
+  _runText.innerText = 'Run in window';
+}
+
+function windowUnloaded() {
+  _runText.innerText = 'Run in new window';
 }
 
 function updateJsEditor(text: string): void {
