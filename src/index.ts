@@ -56,7 +56,11 @@ function init(): void {
 
   tsEditor = monaco.editor.create(_editorTs, {
     value: [
-      'let foo: string = "Hello World!";',
+      'console.info(\'typescript-playground v/* @echo VERSION */\');',
+      '',
+      'function foo(bar: number): string {',
+      '    return `${bar}`;',
+      '}',
       ''
     ].join('\n'),
     language: 'typescript',
@@ -78,18 +82,18 @@ function init(): void {
     minimap: {
       enabled: false
     },
-    contextmenu: false,
+    // contextmenu: false,
     quickSuggestions: false,
     parameterHints: false,
     autoClosingBrackets: false,
     suggestOnTriggerCharacters: false,
     snippetSuggestions: 'none',
     wordBasedSuggestions: false,
-    selectionClipboard: false,
-    find: {
-      seedSearchStringFromSelection: false,
-      autoFindInSelection: false
-    }
+    // selectionClipboard: false,
+    // find: {
+    //   seedSearchStringFromSelection: false,
+    //   autoFindInSelection: false
+    // }
   });
 
   ready();
