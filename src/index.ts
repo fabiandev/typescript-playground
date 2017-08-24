@@ -112,10 +112,19 @@ function ready(): void {
 function expose() {
   (window as any).tsp.compilerOptions = defaultOptions;
   (window as any).tsp.compile = onCodeChange;
+  (window as any).tsp.emit = onCodeChange;
   (window as any).tsp.run = () => runCode();
+
   (window as any).tsp.sync = () => {
     initOptions();
     updateCompilerOptions();
+  };
+
+  (window as any).tsp.setCompilerOption = (name: string, value: any) => {
+    (window as any).tsp.compilerOptions[name] = value;
+    initOptions();
+    updateCompilerOptions();
+    onCodeChange();
   };
 }
 

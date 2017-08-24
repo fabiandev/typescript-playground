@@ -11,10 +11,21 @@ See the playground in action: https://fabiandev.github.io/typescript-playground
 The playground supports some compiler options out of the box. Anyway, a property `tsp` is exposed to the global `window` object, where it is possible to set any option not supported by the UI:
 
 ```js
-tsp.compilerOptions.removeComments = true;
+tsp.setCompilerOption('emitDecoratorMetadata', true);
+```
+
+Each step may also be performed individually:
+
+```js
+tsp.compilerOptions.emitDecoratorMetadata = true;
 tsp.sync(); // Sync options with the editor
-tsp.compile(); // Compile TypeScript code
-tsp.run(); // Run target code in new window
+tsp.emit(); // Compile TypeScript code
+```
+
+Also it is possible to run the current code via the global object:
+
+```js
+tsp.run(); // Run target code in a window
 ```
 
 ## Development Setup
