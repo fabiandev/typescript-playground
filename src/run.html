@@ -33,12 +33,12 @@
   <script src="run.js?__VERSION__"></script>
 
   <script id="code">
-    (function() {
+    (function(___done_callback___) {
       __CODE__
-    })();
-  </script>
-  <script>
-    tsp.fadeOut(document.getElementById('loading-window'));
+      ___done_callback___();
+    })(function() {
+      tsp.fadeOut(document.getElementById('loading-window'));
+    });
   </script>
 </body>
 
