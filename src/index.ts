@@ -217,13 +217,14 @@ function runCode(): void {
 
   if (!runWindow || runWindow.closed) {
     windowOpened();
-    win = window.open('', '', 'width=800,height=600');
+    win = window.open('about:blank', '', 'width=800,height=600');
     runWindow = win;
   } else {
     win = runWindow;
     windowRefreshed();
   }
 
+  win.location.reload();
   win.document.open()
   win.document.write(getWindowCode());
   win.document.close();
