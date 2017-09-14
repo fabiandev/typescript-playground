@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf8">
+  <base id="base" href="">
   <title>TypeScript Playground</title>
   <link rel="icon" href="assets/favicon.ico">
   <link rel="stylesheet" href="style.css?<!-- @echo VERSION -->">
@@ -17,7 +18,7 @@
   <div id="header" class="grid grid-pad">
     <div class="col-1-2">
       <div id="title">
-        TypeScript Playground
+        <a href="">TypeScript Playground</a>
         <span id="options-toggle" class="icon-cog"></span>
         <div id="options">
           <h6>Compiler Options:</h6>
@@ -62,7 +63,7 @@
 
           <h6>Run Window Options:</h6>
           <div class="option">
-            <input class="windowOptions" type="checkbox" name="console" value="true" checked>
+            <input class="windowOptions" type="checkbox" name="console" value="true">
             Capture Console Output
           </div>
         </div>

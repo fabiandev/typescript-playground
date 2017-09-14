@@ -62,6 +62,8 @@ function setDefaultOptions(): void {
 }
 
 function bootstrap(): void {
+  (document.getElementById('base') as HTMLBaseElement).href = getBaseHref();
+
   const win = window as any;
   win.require.config({ paths: { vs: '/* @echo MONACO_LOCATION */' } });
 
@@ -342,6 +344,10 @@ function options(): Options {
 
 function getOptions(): Options {
   return JSON.parse(JSON.stringify(options()));
+}
+
+function getBaseHref(): string {
+  return window.location.href.split('#')[0].replace(/\/?$/, '/');
 }
 
 function getService(): monaco.Promise<any> {
