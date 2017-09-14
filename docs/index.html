@@ -6,7 +6,7 @@
   <base id="base" href="">
   <title>TypeScript Playground</title>
   <link rel="icon" href="assets/favicon.ico">
-  <link rel="stylesheet" href="style.css?1.4.1">
+  <link rel="stylesheet" href="style.css?1.4.2">
 </head>
 
 <body>
@@ -21,6 +21,10 @@
         <a href="">TypeScript Playground</a>
         <span id="options-toggle" class="icon-cog"></span>
         <div id="options">
+          <div class="info">
+            TypeScript v<span id="ts-version"></span>
+          </div>
+
           <h6>Compiler Options:</h6>
           <div class="option">
             <select name="target" class="compilerOptions">
@@ -94,7 +98,7 @@
   </div>
 
   <script src="https://unpkg.com/monaco-editor@^0.10.0/min/vs/loader.js"></script>
-  <script src="app.js?1.4.1"></script>
+  <script src="app.js?1.4.2"></script>
 </body>
 
 </html>
