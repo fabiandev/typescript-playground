@@ -67,7 +67,7 @@ function styles() {
 
 function watch() {
   gulp.watch(`${config.paths.src}/**/*.js`, gulp.parallel(copy));
-  gulp.watch([`${config.paths.src}/**/*.ts`, `${config.paths.src}/run.html`], gulp.parallel(scripts));
+  gulp.watch([`${config.paths.src}/**/*.ts`, `${config.paths.src}/run-console.html`, `${config.paths.src}/run-plain.html`], gulp.parallel(scripts));
   gulp.watch(`${config.paths.src}/index.html`, gulp.parallel(html));
   gulp.watch(`${config.paths.src}/**/*.less`, gulp.parallel(styles));
   gulp.watch(`${config.paths.src}/assets/**/*`, gulp.parallel(assets));

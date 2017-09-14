@@ -17,7 +17,7 @@ tsp.setCompilerOption('emitDecoratorMetadata', true);
 Each step may also be performed individually:
 
 ```js
-tsp.compilerOptions.emitDecoratorMetadata = true;
+tsp.options.compilerOptions.emitDecoratorMetadata = true;
 tsp.sync(); // Sync options with the editor
 tsp.emit(); // Compile TypeScript code
 ```

@@ -20,8 +20,9 @@
         TypeScript Playground
         <span id="options-toggle" class="icon-cog"></span>
         <div id="options">
+          <h6>Compiler Options:</h6>
           <div class="option">
-            <select name="target" class="compilerOption">
+            <select name="target" class="compilerOptions">
               <option value="1">ES5</option>
               <option value="2">ES2015</option>
               <option value="3">ES2016</option>
@@ -31,32 +32,38 @@
             target
           </div>
           <div class="option">
-            <input class="compilerOption" type="checkbox" name="noImplicitAny" value="true">
+            <input class="compilerOptions" type="checkbox" name="noImplicitAny" value="true">
             noImplicitAny
           </div>
           <div class="option">
-            <input class="compilerOption" type="checkbox" name="strictNullChecks" value="true">
+            <input class="compilerOptions" type="checkbox" name="strictNullChecks" value="true">
             strictNullChecks
           </div>
           <div class="option">
-            <input class="compilerOption" type="checkbox" name="noImplicitReturns" value="true">
+            <input class="compilerOptions" type="checkbox" name="noImplicitReturns" value="true">
             noImplicitReturns
           </div>
           <div class="option">
-            <input class="compilerOption" type="checkbox" name="noImplicitThis" value="true">
+            <input class="compilerOptions" type="checkbox" name="noImplicitThis" value="true">
             noImplicitThis
           </div>
           <div class="option">
-            <input class="compilerOption" type="checkbox" name="removeComments" value="true">
+            <input class="compilerOptions" type="checkbox" name="removeComments" value="true">
             removeComments
           </div>
           <div class="option">
-            <input class="compilerOption" type="checkbox" name="preserveConstEnums" value="false">
+            <input class="compilerOptions" type="checkbox" name="preserveConstEnums" value="false">
             preserveConstEnums
           </div>
           <div class="option">
-            <input class="compilerOption" type="checkbox" name="experimentalDecorators" value="false">
+            <input class="compilerOptions" type="checkbox" name="experimentalDecorators" value="false">
             experimentalDecorators
+          </div>
+
+          <h6>Run Window Options:</h6>
+          <div class="option">
+            <input class="windowOptions" type="checkbox" name="console" value="true" checked>
+            Capture Console Output
           </div>
         </div>
       </div>
