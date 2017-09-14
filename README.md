@@ -2,9 +2,11 @@
 
 A playground for TypeScript with the [Monaco Editor](https://github.com/Microsoft/monaco-editor).
 
-## Try
+## Play
 
 See the playground in action: https://fabiandev.github.io/typescript-playground
+
+> The current URL can always be used to share your changes, including options.
 
 ## Compiler Options
 
