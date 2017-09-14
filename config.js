@@ -13,6 +13,7 @@ config.paths = {
 config.monaco = {
   version: pkg.devDependencies['monaco-editor'],
   entry: 'vs/editor/editor.main',
+  typescriptServices: 'vs/language/typescript/lib/typescriptServices',
   get base() {
     return `https://unpkg.com/monaco-editor@${this.version}/min`;
   },
@@ -79,6 +80,7 @@ config.replace = {
   BUNDLE_NAME: config.webpack.output.filename,
   MONACO_VERSION: config.monaco.version,
   MONACO_ENTRY: config.monaco.entry,
+  MONACO_TYPESCRIPT_SERVICES: config.monaco.typescriptServices,
   MONACO_BASE: config.monaco.base,
   MONACO_LOCATION: config.monaco.location,
   MONACO_LOADER: config.monaco.loader

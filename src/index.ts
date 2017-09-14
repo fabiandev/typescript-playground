@@ -17,13 +17,14 @@ interface HashValue {
   options?: Options;
 }
 
-const runWindowCodeConsole = prepareWindowCode(runWindowHtmlConsole);
-const runWindowCodePlain = prepareWindowCode(runWindowHtmlPlain);
-
 let tsEditor: monaco.editor.IStandaloneCodeEditor;
 let jsEditor: monaco.editor.IStandaloneCodeEditor;
 let runWindow: Window;
 
+const runWindowCodeConsole = prepareWindowCode(runWindowHtmlConsole);
+const runWindowCodePlain = prepareWindowCode(runWindowHtmlPlain);
+
+const _tsVersion = document.getElementById('ts-version');
 const _editorJs = document.getElementById('editor-js');
 const _editorTs = document.getElementById('editor-ts');
 const _runCode = document.getElementById('run-code');
@@ -73,17 +74,19 @@ function bootstrap(): void {
     }
   };
 
-  win.require(['/* @echo MONACO_ENTRY */'], init);
+  win.require(['/* @echo MONACO_TYPESCRIPT_SERVICES */', '/* @echo MONACO_ENTRY */'], init);
 }
 
-function init(): void {
+function init(ts: any, editor: any): void {
+  _tsVersion.innerText = ts.version;
   const hashValue = getHash();
 
   setDefaultOptions();
   expose();
 
   const defaultValue = hashValue && !!hashValue.editor ? hashValue.editor : [
-    'console.info(\'typescript-playground v/* @echo VERSION */\');',
+    `console.info('typescript v${ts.version}');`,
+    // `console.info('typescript-playground v/* @echo VERSION */');`,
     '',
     'function foo(bar: number): string {',
     '    return `${bar}`;',
