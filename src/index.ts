@@ -32,7 +32,7 @@ const _loading = document.getElementById('loading');
 const _processing = document.getElementById('processing');
 const _optionsToggle = document.getElementById('options-toggle');
 const _options = document.getElementById('options');
-const _optionsList = (Array.prototype.slice.call(_options.getElementsByClassName('option'))).map(v => {
+const _optionsList = (Array.prototype.slice.call(_options.getElementsByClassName('option'))).map((v: Element) => {
   return v.firstElementChild as HTMLInputElement | HTMLSelectElement;
 });
 
@@ -328,7 +328,7 @@ function getWindowCode(html?: string): string {
   return html.replace(/__CODE__/, jsEditor.getValue())
 }
 
-function setOptions(opts: object, base = options()) {
+function setOptions(opts: { [index: string]: any }, base = options()) {
   for (let k in opts) {
     if (opts[k] !== null && typeof opts[k] === 'object') {
       setOptions(opts[k], base[k]);
