@@ -28,12 +28,11 @@ config.monaco = {
 config.typescript = {
   compilerOptions: {
     sourceMap: true,
-    rootDir: 'src',
-    declaration: false,
+    rootDir: 'src',    
     module: "commonjs",
     target: "ES5",
     noEmit: false,
-    declaration: false
+    declaration: false,
   }
 };
 
