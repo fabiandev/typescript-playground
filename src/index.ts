@@ -3,9 +3,30 @@ import debounce = require('lodash.debounce');
 import runWindowHtmlConsole = require('./run-console.html');
 import runWindowHtmlPlain = require('./run-plain.html');
 
+declare global {
+    interface Window {
+      tsp: {
+        options?: Options;
+        compile?: typeof onCodeChange;
+        emit?: typeof onCodeChange;
+        run?: typeof runCode;
+        share?: typeof getShareableUrl;
+        reset?: typeof resetLocalStorage;
+        sync?: typeof syncOptions;
+        setCompilerOption?: typeof setCompilerOption;
+      }
+    }
+}
+
 interface Options {
-  compilerOptions: monaco.languages.typescript.CompilerOptions;
-  windowOptions: WindowOptions;
+  compilerOptions?: monaco.languages.typescript.CompilerOptions;
+  windowOptions?: WindowOptions;
+  uiOptions?: UIOptions;
+}
+
+interface UIOptions {
+  autoUpdateUrl?: boolean;
+  localStorageBackup?: boolean;
 }
 
 interface WindowOptions {
@@ -31,6 +52,7 @@ const _runCode = document.getElementById('run-code');
 const _runText = document.getElementById('run-text')
 const _loading = document.getElementById('loading');
 const _processing = document.getElementById('processing');
+const _shareableUrl = document.getElementById('shareable-url');
 const _optionsToggle = document.getElementById('options-toggle');
 const _options = document.getElementById('options');
 const _optionsList = (Array.prototype.slice.call(_options.getElementsByClassName('option'))).map((v: Element) => {
@@ -38,8 +60,9 @@ const _optionsList = (Array.prototype.slice.call(_options.getElementsByClassName
 });
 
 let defaultOptions: Options;
+let excludeOptionsFromSharing = ['uiOptions'];
 
-(window as any).tsp = {
+window.tsp = {
   options: {}
 };
 
@@ -58,6 +81,10 @@ function setDefaultOptions(): void {
     },
     windowOptions: {
       console: true
+    },
+    uiOptions: {
+      autoUpdateUrl: false,
+      localStorageBackup: true
     }
   };
 }
@@ -68,7 +95,7 @@ function bootstrap(): void {
   const win = window as any;
   win.require.config({ paths: { vs: '/* @echo MONACO_LOCATION */' } });
 
-  (window as any).MonacoEnvironment = {
+  win.MonacoEnvironment = {
     getWorkerUrl: (workerId, label) => {
       return 'proxy.js';
     }
@@ -80,11 +107,13 @@ function bootstrap(): void {
 function init(ts: any, editor: any): void {
   _tsVersion.innerText = ts.version;
   const hashValue = getHash();
+  const backup = getLocalStorage();
+  let useBackup = false;
 
   setDefaultOptions();
   expose();
 
-  const defaultValue = hashValue && !!hashValue.editor ? hashValue.editor : [
+  let defaultValue = [
     `console.info('typescript v${ts.version}');`,
     // `console.info('typescript-playground v/* @echo VERSION */');`,
     '',
@@ -94,8 +123,34 @@ function init(ts: any, editor: any): void {
     ''
   ].join('\n');
 
+  if (!backup || !backup.options || !backup.options.uiOptions) {
+    useBackup = true;
+  } else if (backup.options.uiOptions.localStorageBackup) {
+    useBackup = true;
+  }
+
+  setOptions({ uiOptions: { localStorageBackup: useBackup } });
+
+  if (useBackup && backup && backup.options) {
+    for (let opt in excludeOptionsFromSharing) {
+      if (backup.options.hasOwnProperty(opt)) {
+        const o = {};
+        o[opt] = backup.options[opt];
+        setOptions(o);
+      }
+    }
+  }
+
+  if (hashValue && !!hashValue.editor) {
+    defaultValue = hashValue.editor;
+  } else if (useBackup && backup && !!backup.editor) {
+    defaultValue = backup.editor;
+  }
+
   if (hashValue && hashValue.options) {
     setOptions(hashValue.options);
+  } else if (useBackup && backup && backup.options) {
+    setOptions(backup.options);
   }
 
   updateCompilerOptions();
@@ -145,26 +200,32 @@ function ready(): void {
   initOptions();
   window.onkeydown = keyBindings;
   onCodeChange();
+  updateHash(true);
+  updateLocalStorage(true)
   fadeOut(_loading);
 }
 
 function expose() {
-  (window as any).tsp.options = defaultOptions;
-  (window as any).tsp.compile = onCodeChange;
-  (window as any).tsp.emit = onCodeChange;
-  (window as any).tsp.run = runCode;
+  window.tsp.options = defaultOptions;
+  window.tsp.compile = onCodeChange;
+  window.tsp.emit = onCodeChange;
+  window.tsp.run = runCode;
+  window.tsp.share = getShareableUrl;
+  window.tsp.reset = resetLocalStorage;
+  window.tsp.sync = syncOptions;
+  window.tsp.setCompilerOption = setCompilerOption;
+}
 
-  (window as any).tsp.sync = () => {
-    initOptions();
-    updateCompilerOptions();
-  };
+function setCompilerOption(name: string, value: any): void {
+  window.tsp.options.compilerOptions[name] = value;
+  initOptions();
+  updateCompilerOptions();
+  onCodeChange();
+}
 
-  (window as any).tsp.setCompilerOption = (name: string, value: any) => {
-    (window as any).tsp.options.compilerOptions[name] = value;
-    initOptions();
-    updateCompilerOptions();
-    onCodeChange();
-  };
+function syncOptions(): void {
+  initOptions();
+  updateCompilerOptions();
 }
 
 function keyBindings(this: Window, ev: KeyboardEvent) {
@@ -222,11 +283,14 @@ function onOptionChange(this: HTMLInputElement | HTMLSelectElement, ev: Event): 
   updateCompilerOptions();
   onCodeChange();
   updateHash();
+  updateLocalStorage();
+  updateShareableUrl();
 }
 
 function onCodeChange(event?: monaco.editor.IModelContentChangedEvent): void {
   if (event !== void 0) {
     updateHash();
+    updateLocalStorage();
   }
 
   showProcessingIndicator();
@@ -293,19 +357,78 @@ function windowUnloaded() {
   _runText.innerText = 'Run in new window';
 }
 
-function updateHash(): void {
+function updateHash(initial?: boolean): void {
+  if (!!window.tsp.options.uiOptions.autoUpdateUrl) {
+    if (!initial) {
+      window.location.hash = encode(exclude(getHashValue()));
+    }
+  } else if(!!window.location.hash) {
+    window.location.hash = '';
+  }
+}
+
+function getLocalStorage(): HashValue {
+  const hash = localStorage.getItem('tsp');
+  if (!hash) return {};
+  return decode(hash);
+}
+
+function updateLocalStorage(initial?: boolean): void {
+  if (!!window.tsp.options.uiOptions.localStorageBackup) {
+    localStorage.setItem('tsp', encode(getHashValue()));
+  } else {
+    localStorage.setItem('tsp', encode({ options: { uiOptions: { localStorageBackup: false } } }));
+  }
+}
+
+function resetLocalStorage(reload = false, event: Event) {
+  if (event) event.preventDefault();
+  localStorage.removeItem('tsp');
+  if (reload) window.location.href = window.location.href.split('#')[0];
+}
+
+function updateShareableUrl(): void {
+  (_shareableUrl as HTMLInputElement).value = getShareableUrl();
+}
+
+function getShareableUrl(): string {
+  return window.location.href
+    .replace(window.location.hash, '')
+    .replace('#', '') +
+    `#${encode(exclude(getHashValue()))}`;
+}
+
+function encode(value): string {
+  return btoa(encodeURIComponent(JSON.stringify(value)));
+}
+
+function decode(hash: string): HashValue {
+  return JSON.parse(decodeURIComponent(atob(hash)));
+}
+
+function exclude(value: HashValue): HashValue {
+  value = JSON.parse(JSON.stringify(value));
+
+  for (let opt of excludeOptionsFromSharing) {
+    value.options[opt] = void 0;
+  }
+
+  return value;
+}
+
+function getHashValue(exclude = true): HashValue {
   const value = {
     editor: tsEditor.getValue(),
     options: getOptions()
   };
 
-  window.location.hash = btoa(encodeURIComponent(JSON.stringify(value)));
+  return value;
 }
 
 function getHash(): HashValue {
   const hash = window.location.hash.substr(1);
   if (!hash) return {};
-  return JSON.parse(decodeURIComponent(atob(hash)));
+  return decode(hash);
 }
 
 function updateJsEditor(text: string): void {
@@ -342,7 +465,7 @@ function setOptions(opts: { [index: string]: any }, base = options()) {
 }
 
 function options(): Options {
-  return (window as any).tsp.options;
+  return window.tsp.options;
 }
 
 function getOptions(): Options {
@@ -359,7 +482,12 @@ function getService(): monaco.Promise<any> {
 }
 
 function toggleOptions(this: HTMLElement, ev: Event): void {
-  this.classList.toggle('active');
+  const show = this.classList.toggle('active');
+
+  if (show) {
+    updateShareableUrl();
+  }
+
   _options.classList.toggle('visible');
 }
 
