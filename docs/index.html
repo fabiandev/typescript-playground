@@ -25,6 +25,24 @@
             TypeScript v<span id="ts-version"></span>
           </div>
 
+          <h6>Share</h6>
+          <div class="info">
+            <input id="shareable-url" type="text" name="sharableUrl" onClick="this.setSelectionRange(0, this.value.length)">
+          </div>
+
+          <h6>UI Options</h6>
+          <div class="option">
+            <input class="uiOptions" type="checkbox" name="autoUpdateUrl" value="false">
+            Sync Address Bar
+          </div>
+          <div class="option">
+            <input class="uiOptions" type="checkbox" name="localStorageBackup" value="true">
+            Sync Local Storage
+          </div>
+          <div class="info">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="" onclick="tsp.reset(true, event)">Reset and Reload</a>
+          </div>
+
           <h6>Compiler Options:</h6>
           <div class="option">
             <select name="target" class="compilerOptions">
