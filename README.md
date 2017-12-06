@@ -6,7 +6,7 @@ A playground for TypeScript with the [Monaco Editor](https://github.com/Microsof
 
 See the playground in action: https://fabiandev.github.io/typescript-playground
 
-> The current URL can always be used to share your changes, including options.
+> A shareable URL can be obtained from the settings of the editor.
 
 ## Compiler Options
 
@@ -16,19 +16,18 @@ The playground supports some compiler options out of the box. Anyway, a property
 tsp.setCompilerOption('emitDecoratorMetadata', true);
 ```
 
-Each step may also be performed individually:
+## Console API
 
-```js
-tsp.options.compilerOptions.emitDecoratorMetadata = true;
-tsp.sync(); // Sync options with the editor
-tsp.emit(); // Compile TypeScript code
-```
+Besides setting compiler options via `setCompilerOption`, the editor exposes some more functionality:
 
-Also it is possible to run the current code via the global object:
-
-```js
-tsp.run(); // Run target code in a window
-```
+| Property              | Description
+|-----------------------|--------------------------------------------------
+| options               | Holds all options of the editor, including compiler options
+| sync()                | Syncs (changed) options with the editor
+| emit()                | Triggers a compilation
+| run()                 | Runs the compiled code in a window
+| share()               | Retrieves a shareable URL as string
+| reset(reload = false) | Resets the editor and optionally reloads the page
 
 ## Development Setup
 
