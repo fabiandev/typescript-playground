@@ -275,7 +275,7 @@ function onOptionChange(this: HTMLInputElement | HTMLSelectElement, ev: Event): 
   } else if (this instanceof HTMLSelectElement) {
     value = (this as HTMLSelectElement).value;
   } else {
-    value = this.value;
+    value = (this as any).value || void 0;
   }
 
   options()[option][this.name] = value;
