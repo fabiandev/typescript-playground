@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const pkg = require('./package.json');
 const config = {};
 
@@ -37,6 +38,7 @@ config.typescript = {
 };
 
 config.webpack = {
+  mode: process.env.NODE_ENV || 'production',
   entry: {
     bundle: path.join(__dirname, `${config.paths.src}/index.ts`)
   },
@@ -69,9 +71,13 @@ config.webpack = {
       }
     ]
   },
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({sourceMap: true})
-  ]
+  optimization: {
+    minimizer: [
+      new UglifyJSPlugin({
+        sourceMap: true
+      })
+    ]
+  }
 };
 
 config.replace = {

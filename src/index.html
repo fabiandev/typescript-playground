@@ -6,7 +6,7 @@
   <base id="base" href="">
   <title>TypeScript Playground</title>
   <link rel="icon" href="assets/favicon.ico">
-  <link rel="stylesheet" href="style.css?<!-- @echo VERSION -->">
+  <link rel="stylesheet" href="style.css?v=<!-- @echo VERSION -->">
 </head>
 
 <body>
@@ -23,6 +23,11 @@
         <div id="options">
           <div class="info">
             TypeScript v<span id="ts-version"></span>
+          </div>
+
+          <h6>Share</h6>
+          <div class="info">
+            <input id="shareable-url" type="text" name="sharableUrl" onClick="this.setSelectionRange(0, this.value.length)">
           </div>
 
           <h6>Compiler Options:</h6>
@@ -65,6 +70,19 @@
             experimentalDecorators
           </div>
 
+          <h6>UI Options</h6>
+          <div class="option">
+            <input class="uiOptions" type="checkbox" name="autoUpdateUrl" value="false">
+            Sync Address Bar
+          </div>
+          <div class="option">
+            <input class="uiOptions" type="checkbox" name="localStorageBackup" value="true" disabled>
+            Sync Local Storage
+          </div>
+          <div class="info">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="" onclick="tsp.reset(true, event)">Reset and Reload</a>
+          </div>
+
           <h6>Run Window Options:</h6>
           <div class="option">
             <input class="windowOptions" type="checkbox" name="console" value="true">
@@ -97,8 +115,8 @@
     </div>
   </div>
 
-  <script src="<!-- @echo MONACO_LOADER -->"></script>
-  <script src="<!-- @echo BUNDLE_NAME -->?<!-- @echo VERSION -->"></script>
+  <script src="<!-- @echo MONACO_LOADER -->?v=<!-- @echo VERSION -->"></script>
+  <script src="<!-- @echo BUNDLE_NAME -->?v=<!-- @echo VERSION -->"></script>
 </body>
 
 </html>
