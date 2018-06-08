@@ -9,7 +9,7 @@
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "del": "^3.0.0",
-    "gulp": "gulpjs/gulp#4.0",
+    "gulp": "^4.0.0",
     "gulp-babel": "^7.0.0",
     "gulp-clean-css": "^3.7.0",
     "gulp-less": "^3.3.2",
@@ -19,19 +19,20 @@
     "gulp-uglify": "^3.0.0",
     "live-server": "^1.2.0",
     "lodash.debounce": "^4.0.8",
-    "monaco-editor": "^0.10.0",
-    "normalize.css": "^7.0.0",
+    "monaco-editor": "^0.13.1",
+    "normalize.css": "^8.0.0",
     "raw-loader": "^0.5.1",
     "source-map-loader": "^0.2.1",
-    "ts-loader": "^2.3.1",
+    "ts-loader": "^4.4.0",
     "typescript": "^2.4.2",
-    "uglify-js": "^3.0.28",
-    "webpack": "^3.3.0",
-    "webpack-stream": "^3.2.0"
+    "uglify-js": "^3.4.0",
+    "uglifyjs-webpack-plugin": "^1.2.5",
+    "webpack": "^4.11.1",
+    "webpack-stream": "^4.0.3"
   },
   "scripts": {
-    "build": "node_modules/.bin/gulp build",
-    "watch": "node_modules/.bin/gulp watch",
+    "build": "NODE_ENV=production && node_modules/.bin/gulp build",
+    "watch": "NODE_ENV=development && node_modules/.bin/gulp watch",
     "serve": "node_modules/.bin/live-server ./docs"
   },
   "repository": {
