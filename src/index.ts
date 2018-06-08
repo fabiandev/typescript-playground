@@ -383,6 +383,8 @@ function updateLocalStorage(initial?: boolean): void {
 
 function resetLocalStorage(reload = false, event: Event) {
   if (event) event.preventDefault();
+  const confirmation = confirm('Are you sure? All your changes will be lost.');
+  if (!confirmation) return;
   localStorage.removeItem('tsp');
   if (reload) window.location.href = window.location.href.split('#')[0];
 }
