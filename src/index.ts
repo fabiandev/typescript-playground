@@ -114,9 +114,6 @@ function init(ts: any, editor: any): void {
   expose();
 
   let defaultValue = [
-    `console.info('typescript v${ts.version}');`,
-    // `console.info('typescript-playground v/* @echo VERSION */');`,
-    '',
     'function foo(bar: number): string {',
     '    return `${bar}`;',
     '}',
