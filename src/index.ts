@@ -101,11 +101,11 @@ function bootstrap(): void {
     }
   };
 
-  win.require(['/* @echo MONACO_TYPESCRIPT_SERVICES */', '/* @echo MONACO_ENTRY */'], init);
+  win.require(['/* @echo MONACO_ENTRY */'], init);
 }
 
-function init(ts: any, editor: any): void {
-  _tsVersion.innerText = ts.version;
+function init(editor: any): void {
+  _tsVersion.innerText = '/* @echo TYPESCRIPT_VERSION */';
   const hashValue = getHash();
   const backup = getLocalStorage();
   let useBackup = false;

@@ -2,6 +2,8 @@ const path = require('path');
 const webpack = require('webpack');
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const pkg = require('./package.json');
+const monacoEditorPkg = require('monaco-typescript/package.json');
+
 const config = {};
 
 config.version = pkg.version;
@@ -13,8 +15,8 @@ config.paths = {
 
 config.monaco = {
   version: pkg.devDependencies['monaco-editor'],
+  typescriptVersion: monacoEditorPkg.devDependencies.typescript,
   entry: 'vs/editor/editor.main',
-  typescriptServices: 'vs/language/typescript/lib/typescriptServices',
   get base() {
     return `https://unpkg.com/monaco-editor@${this.version}/min`;
   },
@@ -82,10 +84,10 @@ config.webpack = {
 
 config.replace = {
   VERSION: config.version,
+  TYPESCRIPT_VERSION: config.monaco.typescriptVersion,
   BUNDLE_NAME: config.webpack.output.filename,
   MONACO_VERSION: config.monaco.version,
   MONACO_ENTRY: config.monaco.entry,
-  MONACO_TYPESCRIPT_SERVICES: config.monaco.typescriptServices,
   MONACO_BASE: config.monaco.base,
   MONACO_LOCATION: config.monaco.location,
   MONACO_LOADER: config.monaco.loader
