@@ -71,6 +71,8 @@ function setDefaultOptions(): void {
     compilerOptions: {
       noImplicitAny: false,
       strictNullChecks: false,
+      strictFunctionTypes: false,
+      strictPropertyInitialization: false,
       noImplicitReturns: false,
       noImplicitThis: false,
       removeComments: false,
