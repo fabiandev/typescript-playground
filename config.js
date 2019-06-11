@@ -82,6 +82,10 @@ config.webpack = {
   }
 };
 
+if (config.monaco.typescriptVersion.startsWith('~') || config.monaco.typescriptVersion.startsWith('^')) {
+  config.monaco.typescriptVersion = config.monaco.typescriptVersion.substring(1);
+}
+
 config.replace = {
   VERSION: config.version,
   TYPESCRIPT_VERSION: config.monaco.typescriptVersion,
