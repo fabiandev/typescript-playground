@@ -177,8 +177,8 @@ function init(editor: any): void {
     },
     // contextmenu: false,
     quickSuggestions: false,
-    parameterHints: false,
-    autoClosingBrackets: false,
+    parameterHints: {enabled: false},
+    autoClosingBrackets: 'never',
     suggestOnTriggerCharacters: false,
     snippetSuggestions: 'none',
     wordBasedSuggestions: false,
@@ -443,6 +443,10 @@ function updateCompilerOptions(): void {
 }
 
 function prepareWindowCode(html: string): string {
+  if (typeof html !== 'string') {
+    return '';
+  }
+
   return html
     .replace(new RegExp(/__BASE__/), window.location.href.split('#')[0].replace(/\/?$/, '/'))
     .replace(new RegExp(/__VERSION__/g), '/* @echo VERSION */');
@@ -477,7 +481,7 @@ function getBaseHref(): string {
   return window.location.href.split('#')[0].replace(/\/?$/, '/');
 }
 
-function getService(): monaco.Promise<any> {
+function getService(): Promise<any> {
   return monaco.languages.typescript.getTypeScriptWorker()
     .then(worker => worker(tsEditor.getModel().uri))
 }
