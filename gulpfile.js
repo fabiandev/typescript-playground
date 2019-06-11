@@ -35,10 +35,10 @@ function copy() {
 }
 
 function clean(done) {
-  del([
+  return del([
     `${config.paths.dest}/**/*`,
     `!${config.paths.dest}/README.md`
-  ]).then(() => done());
+  ]);
 }
 
 function html() {
@@ -50,6 +50,10 @@ function html() {
 function scripts() {
   return gulp.src([`${config.paths.src}/index.ts`])
     .pipe(webpack(config.webpack, wp))
+    .on('error', (err) => {
+      console.log(err.message);
+      this.emit('end');
+    })
     .pipe(preprocess({ context: config.replace }))
     .pipe(gulp.dest(config.webpack.output.path));
 }
