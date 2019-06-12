@@ -42,8 +42,8 @@ let tsEditor: monaco.editor.IStandaloneCodeEditor;
 let jsEditor: monaco.editor.IStandaloneCodeEditor;
 let runWindow: Window;
 
-const runWindowCodeConsole = prepareWindowCode(runWindowHtmlConsole);
-const runWindowCodePlain = prepareWindowCode(runWindowHtmlPlain);
+const runWindowCodeConsole = prepareWindowCode(runWindowHtmlConsole.default);
+const runWindowCodePlain = prepareWindowCode(runWindowHtmlPlain.default);
 
 const _tsVersion = document.getElementById('ts-version');
 const _editorJs = document.getElementById('editor-js');
@@ -453,9 +453,11 @@ function prepareWindowCode(html: string): string {
 }
 
 function getWindowCode(html?: string): string {
+  console.log('getting window code');
   html = html !== void 0
    ? html : options().windowOptions.console
    ? runWindowCodeConsole : runWindowCodePlain;
+   console.log(html);
   return html.replace(/__CODE__/, jsEditor.getValue())
 }
 

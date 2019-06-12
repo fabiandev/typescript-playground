@@ -68,7 +68,7 @@ config.webpack = {
         loader: 'ts-loader',
         options: config.typescript
       }, {
-        test: /\.html/,
+        test: /\.html$/,
         use: 'raw-loader'
       }
     ]
