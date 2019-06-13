@@ -20,14 +20,14 @@ tsp.setCompilerOption('emitDecoratorMetadata', true);
 
 Besides setting compiler options via `setCompilerOption`, the editor exposes some more functionality:
 
-| Property              | Description
-|-----------------------|--------------------------------------------------
-| options               | Holds all options of the editor, including compiler options
-| sync()                | Syncs (changed) options with the editor
-| emit()                | Triggers a compilation
-| run()                 | Runs the compiled code in a window
-| share()               | Retrieves a shareable URL as string
-| reset(reload = false) | Resets the editor and optionally reloads the page
+| Property                             | Description
+|--------------------------------------|--------------------------------------------------
+| options                              | Holds all options of the editor, including compiler options
+| sync()                               | Syncs (changed) options with the editor
+| emit()                               | Triggers a compilation
+| run()                                | Runs the compiled code in a window
+| share()                              | Retrieves a shareable URL as string
+| reset(reload = false, force = false) | Resets the editor and optionally reloads the page
 
 ## Development Setup
 

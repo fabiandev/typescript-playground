@@ -380,12 +380,21 @@ function updateLocalStorage(initial?: boolean): void {
   }
 }
 
-function resetLocalStorage(reload = false, event: Event) {
-  if (event) event.preventDefault();
-  const confirmation = confirm('Are you sure? All your changes will be lost.');
-  if (!confirmation) return;
+function resetLocalStorage(reload = false, force = false, event: Event) {
+  if (event) {
+    event.preventDefault();
+  }
+
+  if (!force) {
+    const confirmation = confirm('Are you sure? All your changes will be lost.');
+    if (!confirmation) return;
+  }
+
   localStorage.removeItem('tsp');
-  if (reload) window.location.href = window.location.href.split('#')[0];
+
+  if (reload) {
+    window.location.href = window.location.href.split('#')[0];
+  }
 }
 
 function updateShareableUrl(): void {
