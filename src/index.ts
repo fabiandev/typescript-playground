@@ -453,11 +453,9 @@ function prepareWindowCode(html: string): string {
 }
 
 function getWindowCode(html?: string): string {
-  console.log('getting window code');
   html = html !== void 0
    ? html : options().windowOptions.console
    ? runWindowCodeConsole : runWindowCodePlain;
-   console.log(html);
   return html.replace(/__CODE__/, jsEditor.getValue())
 }
 
