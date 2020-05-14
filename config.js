@@ -13,21 +13,6 @@ config.paths = {
   dest: 'docs'
 };
 
-config.monaco = {
-  version: pkg.devDependencies['monaco-editor'],
-  typescriptVersion: monacoEditorPkg.devDependencies.typescript,
-  entry: 'vs/editor/editor.main',
-  get base() {
-    return `https://unpkg.com/monaco-editor@${this.version}/min`;
-  },
-  get location() {
-    return `https://unpkg.com/monaco-editor@${this.version}/min/vs`
-  },
-  get loader() {
-    return `${this.location}/loader.js`
-  }
-};
-
 config.typescript = {
   compilerOptions: {
     sourceMap: true,
@@ -88,13 +73,7 @@ if (config.monaco.typescriptVersion.startsWith('~') || config.monaco.typescriptV
 
 config.replace = {
   VERSION: config.version,
-  TYPESCRIPT_VERSION: config.monaco.typescriptVersion,
-  BUNDLE_NAME: config.webpack.output.filename,
-  MONACO_VERSION: config.monaco.version,
-  MONACO_ENTRY: config.monaco.entry,
-  MONACO_BASE: config.monaco.base,
-  MONACO_LOCATION: config.monaco.location,
-  MONACO_LOADER: config.monaco.loader
+  BUNDLE_NAME: config.webpack.output.filename
 };
 
 module.exports = config;

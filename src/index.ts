@@ -1,10 +1,20 @@
-import * as ts from 'typescript';
+import { EmitOutput } from 'typescript';
 import debounce = require('lodash.debounce');
 import runWindowHtmlConsole = require('./run-console.html');
 import runWindowHtmlPlain = require('./run-plain.html');
+import { getConfig } from './versions';
+
+type MonacoLoader = {
+  (pahts: string[], cb?: () => void);
+  config: (config: {
+    paths: Record<string, string>
+  }) => void;
+};
 
 declare global {
     interface Window {
+      MonacoEnvironment?: monaco.Environment;
+      require: MonacoLoader;
       tsp: {
         options?: Options;
         compile?: typeof onCodeChange;
@@ -91,23 +101,26 @@ function setDefaultOptions(): void {
   };
 }
 
-function bootstrap(): void {
+function bootstrap(tsVersion?: string): void {
+  const config = getConfig(tsVersion);
+
   (document.getElementById('base') as HTMLBaseElement).href = getBaseHref();
 
-  const win = window as any;
-  win.require.config({ paths: { vs: '/* @echo MONACO_LOCATION */' } });
+  window.require.config({ paths: { vs: config.locationUrl } });
 
-  win.MonacoEnvironment = {
-    getWorkerUrl: (workerId, label) => {
-      return 'proxy.js';
+  window.MonacoEnvironment = {
+    getWorkerUrl: (workerId: string, label: string) => {
+      return `proxy.js?baseUrl=${config.baseUrl}&locationUrl=${config.locationUrl}`;
     }
   };
 
-  win.require(['/* @echo MONACO_ENTRY */'], init);
+  window.require([config.entry], (editor?: typeof monaco.editor) => {
+    init(config.version);
+  });
 }
 
-function init(editor: any): void {
-  _tsVersion.innerText = '/* @echo TYPESCRIPT_VERSION */';
+function init(tsVersion: string): void {
+  _tsVersion.innerText = tsVersion;
   const hashValue = getHash();
   const backup = getLocalStorage();
   let useBackup = false;
@@ -298,7 +311,7 @@ function onCodeChange(event?: monaco.editor.IModelContentChangedEvent): void {
     .then(service => {
       return service.getEmitOutput(tsEditor.getModel().uri.toString())
     }, hideProcessingIndicator)
-    .then((result: ts.EmitOutput) => {
+    .then((result: EmitOutput) => {
       if (result.emitSkipped) {
         return false;
       }
@@ -527,4 +540,5 @@ function fadeOut(target: HTMLElement, interval = 5, reduce = 0.01): void {
   }, interval);
 }
 
+// TODO: get version from config and pass on
 bootstrap();

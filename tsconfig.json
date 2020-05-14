@@ -3,9 +3,10 @@
   "compilerOptions": {
     "moduleResolution": "Node",
     "target": "ES5",
-    "module": "system",
+    "module": "commonjs",
     "noEmit": true,
     "removeComments": true,
+    "resolveJsonModule": true,
     "sourceMap": true,
     "typeRoots": [
       "./node_modules/@types",

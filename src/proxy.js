@@ -1,5 +1,10 @@
+const params = new URLSearchParams(location.search);
+
+const baseUrl = params.get("baseUrl");
+const locationUrl = params.get("locationUrl");
+
 self.MonacoEnvironment = {
-  baseUrl: '/* @echo MONACO_BASE *//'
+  baseUrl: baseUrl
 };
 
-importScripts('/* @echo MONACO_LOCATION *//base/worker/workerMain.js');
+importScripts(locationUrl + '/base/worker/workerMain.js');
