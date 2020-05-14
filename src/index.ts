@@ -2,7 +2,7 @@ import { EmitOutput } from 'typescript';
 import debounce = require('lodash.debounce');
 import runWindowHtmlConsole = require('./run-console.html');
 import runWindowHtmlPlain = require('./run-plain.html');
-import { getConfig } from './versions';
+import { getConfig, EditorConfig } from './config';
 
 type MonacoLoader = {
   (pahts: string[], cb?: () => void);
@@ -101,9 +101,7 @@ function setDefaultOptions(): void {
   };
 }
 
-function bootstrap(tsVersion?: string): void {
-  const config = getConfig(tsVersion);
-
+function bootstrap(config: EditorConfig): void {
   (document.getElementById('base') as HTMLBaseElement).href = getBaseHref();
 
   window.require.config({ paths: { vs: config.locationUrl } });
@@ -115,12 +113,16 @@ function bootstrap(tsVersion?: string): void {
   };
 
   window.require([config.entry], (editor?: typeof monaco.editor) => {
-    init(config.version);
+    init(config.tsVersion);
   });
 }
 
+function buildVersionSelection(selectedVersion: string): string {
+  return selectedVersion;
+}
+
 function init(tsVersion: string): void {
-  _tsVersion.innerText = tsVersion;
+  _tsVersion.innerHTML = buildVersionSelection(tsVersion);
   const hashValue = getHash();
   const backup = getLocalStorage();
   let useBackup = false;
@@ -540,5 +542,18 @@ function fadeOut(target: HTMLElement, interval = 5, reduce = 0.01): void {
   }, interval);
 }
 
-// TODO: get version from config and pass on
-bootstrap();
+(function setup() {
+  const params = new URLSearchParams(location.search);
+  const tsVersion = params.get('ts');
+
+  const config = getConfig(tsVersion);
+  const script = document.createElement('script');
+
+  script.onload = () => {
+      bootstrap(config);
+  };
+
+  script.src = config.loaderUrl;
+
+  document.head.appendChild(script);
+})();

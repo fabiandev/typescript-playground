@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const pkg = require('./package.json');
-const monacoEditorPkg = require('monaco-typescript/package.json');
 
 const config = {};
 
@@ -66,10 +65,6 @@ config.webpack = {
     ]
   }
 };
-
-if (config.monaco.typescriptVersion.startsWith('~') || config.monaco.typescriptVersion.startsWith('^')) {
-  config.monaco.typescriptVersion = config.monaco.typescriptVersion.substring(1);
-}
 
 config.replace = {
   VERSION: config.version,
