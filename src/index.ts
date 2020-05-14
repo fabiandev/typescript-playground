@@ -117,6 +117,7 @@ function bootstrap(config: EditorConfig): void {
   });
 }
 
+// TODO: Add TypeScript version selection
 function buildVersionSelection(selectedVersion: string): string {
   return selectedVersion;
 }
