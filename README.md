@@ -18,7 +18,7 @@ tsp.setCompilerOption('emitDecoratorMetadata', true);
 
 ## Console API
 
-Besides setting compiler options via `setCompilerOption`, the editor exposes some more functionality:
+The editor exposes some more functionality:
 
 | Property                             | Description
 |--------------------------------------|--------------------------------------------------
@@ -28,6 +28,8 @@ Besides setting compiler options via `setCompilerOption`, the editor exposes som
 | run()                                | Runs the compiled code in a window
 | share()                              | Retrieves a shareable URL as string
 | reset(reload = false, force = false) | Resets the editor and optionally reloads the page
+| setCompilerOption(option, value)     | Set any compiler option programatically
+| changeTsVersion(version)             | Reloads page with ?ts=version query string
 
 ## Development Setup
 
