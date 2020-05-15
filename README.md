@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="620" src="typescript-playground.png">
+  <img width="100%" src="typescript-playground.png">
 </p>
 
 # TypeScript Playground
