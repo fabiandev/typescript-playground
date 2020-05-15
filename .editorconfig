@@ -9,6 +9,7 @@ indent_style = space
 
 [*.{js,jsx,ts,tsx}]
 indent_size = 2
+quote_type = single
 
 [*.ts]
 max_line_length = 125
