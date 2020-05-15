@@ -89,7 +89,7 @@ function setDefaultOptions(): void {
       experimentalDecorators: false,
       emitDecoratorMetadata: false,
       allowNonTsExtensions: true,
-      target: monaco.languages.typescript.ScriptTarget.ES5
+      target: monaco.languages.typescript.ScriptTarget.ES2015
     },
     windowOptions: {
       console: true
