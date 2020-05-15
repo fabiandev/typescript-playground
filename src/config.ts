@@ -46,7 +46,11 @@ export function getEditorConfig(tsVersion: string = 'latest'): EditorConfig {
   }
 
   const monacoUrl = `https://unpkg.com/${config.module}@${config.monaco}`;
+
   const baseUrl = `${monacoUrl}/min`;
+  const locationUrl = `${baseUrl}/vs`;
+  const loaderUrl = `${baseUrl}/vs/loader.js`
+  const proxyPath = `proxy.js?baseUrl=${baseUrl}&locationUrl=${locationUrl}`;
 
   return {
     ...config,
@@ -54,8 +58,8 @@ export function getEditorConfig(tsVersion: string = 'latest'): EditorConfig {
     tsVersion: usedVersion,
     monacoUrl,
     baseUrl,
-    locationUrl: `${baseUrl}/vs`,
-    loaderUrl: `${baseUrl}/vs/loader.js`,
-    proxyPath: `proxy.js?baseUrl=${config.baseUrl}&locationUrl=${config.locationUrl}`,
+    locationUrl,
+    loaderUrl,
+    proxyPath,
   };
 }
