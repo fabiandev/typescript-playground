@@ -11,25 +11,36 @@ export interface EditorConfig {
   hide?: boolean;
 }
 
-export { versions };
-
-export function latestVersion() {
+export function getLatestVersion() {
   return Object.keys(versions)
     .filter((key) => key !== "nightly" && !key.includes("-"))
     .sort()
     .pop();
 }
 
-export function getConfig(tsVersion: string = "latest"): EditorConfig {
-  if (tsVersion == null) {
-    tsVersion = "latest";
+export function getEditorConfigs(): EditorConfig[] {
+  return Object
+    .keys(versions)
+    .map(version => getEditorConfig(version));
+}
+
+export function getEditorConfig(tsVersion: string = "latest"): EditorConfig {
+  const latestVersion = getLatestVersion();
+  let usedVersion = tsVersion;
+
+  if (usedVersion == null) {
+    usedVersion = "latest";
   }
 
-  if (tsVersion === "latest") {
-    tsVersion = latestVersion();
+  if (usedVersion === "latest") {
+    usedVersion = latestVersion;
   }
 
-  const config = versions[tsVersion.toLowerCase()] || versions[latestVersion()];
+  if (versions[usedVersion.toLowerCase()] == null) {
+    usedVersion = latestVersion;
+  }
+
+  const config = versions[usedVersion];
 
   if (config == null) {
     throw new Error("Could not load TypeScript version");
@@ -41,7 +52,7 @@ export function getConfig(tsVersion: string = "latest"): EditorConfig {
   return {
     ...config,
     entry: "vs/editor/editor.main",
-    tsVersion,
+    tsVersion: usedVersion,
     monacoUrl,
     baseUrl,
     locationUrl: `${baseUrl}/vs`,

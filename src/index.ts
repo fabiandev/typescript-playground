@@ -2,7 +2,7 @@ import { EmitOutput } from 'typescript';
 import debounce = require('lodash.debounce');
 import runWindowHtmlConsole = require('./run-console.html');
 import runWindowHtmlPlain = require('./run-plain.html');
-import { getConfig, EditorConfig } from './config';
+import { getEditorConfigs, getEditorConfig, EditorConfig } from './config';
 
 type MonacoLoader = {
   (pahts: string[], cb?: () => void);
@@ -56,6 +56,7 @@ const runWindowCodeConsole = prepareWindowCode(runWindowHtmlConsole.default);
 const runWindowCodePlain = prepareWindowCode(runWindowHtmlPlain.default);
 
 const _tsVersion = document.getElementById('ts-version');
+const _tsVersionSelector = document.getElementById('ts-version-selector');
 const _editorJs = document.getElementById('editor-js');
 const _editorTs = document.getElementById('editor-ts');
 const _runCode = document.getElementById('run-code');
@@ -117,13 +118,58 @@ function bootstrap(config: EditorConfig): void {
   });
 }
 
-// TODO: Add TypeScript version selection
-function buildVersionSelection(selectedVersion: string): string {
-  return selectedVersion;
+function changeTsVersion(version: string) {
+  const params = new URLSearchParams(window.location.search);
+  params.set('ts', version);
+  window.location.search = params.toString();
+}
+
+function applyVersionSelection(selectedVersion: string): void {
+  const configs = getEditorConfigs()
+    .filter(config => config.hide !== true)
+    .map(config => ({
+      tsVersion: config.tsVersion,
+      monacoVersion: config.monaco,
+      monacoModule: config.module
+    }));
+
+  var list = document.createElement("select");
+  list.id = "ts-version-select";
+
+  let selectedVersionText: string;
+
+  for (let config of configs) {
+      const option = document.createElement("option");
+      const tsVersion = config.tsVersion;
+
+      option.value = config.tsVersion;
+
+      option.text = isNaN(parseInt(config.tsVersion[0]))
+      ? tsVersion
+      : `v${tsVersion}`;
+
+      option.selected = config.tsVersion === selectedVersion;
+
+      if (option.selected) {
+        selectedVersionText = option.text;
+      }
+
+      list.onchange = function() {
+        const el = this as HTMLSelectElement;
+        changeTsVersion(el.value);
+      };
+
+      list.appendChild(option);
+  }
+
+  _tsVersionSelector.innerHTML = '';
+  _tsVersionSelector.appendChild(list);
+  _tsVersion.innerText = selectedVersionText;
 }
 
 function init(tsVersion: string): void {
-  _tsVersion.innerHTML = buildVersionSelection(tsVersion);
+  applyVersionSelection(tsVersion);
+
   const hashValue = getHash();
   const backup = getLocalStorage();
   let useBackup = false;
@@ -547,7 +593,7 @@ function fadeOut(target: HTMLElement, interval = 5, reduce = 0.01): void {
   const params = new URLSearchParams(location.search);
   const tsVersion = params.get('ts');
 
-  const config = getConfig(tsVersion);
+  const config = getEditorConfig(tsVersion);
   const script = document.createElement('script');
 
   script.onload = () => {
