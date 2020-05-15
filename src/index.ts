@@ -109,7 +109,7 @@ function bootstrap(config: EditorConfig): void {
 
   window.MonacoEnvironment = {
     getWorkerUrl: (workerId: string, label: string) => {
-      return `proxy.js?baseUrl=${config.baseUrl}&locationUrl=${config.locationUrl}`;
+      return config.proxyPath;
     }
   };
 

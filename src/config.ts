@@ -6,6 +6,7 @@ export interface EditorConfig {
   baseUrl: string;
   locationUrl: string;
   loaderUrl: string;
+  proxyPath: string;
   monaco: string;
   module: string;
   hide?: boolean;
@@ -57,5 +58,6 @@ export function getEditorConfig(tsVersion: string = "latest"): EditorConfig {
     baseUrl,
     locationUrl: `${baseUrl}/vs`,
     loaderUrl: `${baseUrl}/vs/loader.js`,
+    proxyPath: `proxy.js?baseUrl=${config.baseUrl}&locationUrl=${config.locationUrl}`
   };
 }
