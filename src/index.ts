@@ -6,26 +6,24 @@ import { getEditorConfigs, getEditorConfig, EditorConfig } from './config';
 
 type MonacoLoader = {
   (pahts: string[], cb?: () => void);
-  config: (config: {
-    paths: Record<string, string>
-  }) => void;
+  config: (config: { paths: Record<string, string> }) => void;
 };
 
 declare global {
-    interface Window {
-      MonacoEnvironment?: monaco.Environment;
-      require: MonacoLoader;
-      tsp: {
-        options?: Options;
-        compile?: typeof onCodeChange;
-        emit?: typeof onCodeChange;
-        run?: typeof runCode;
-        share?: typeof getShareableUrl;
-        reset?: typeof resetLocalStorage;
-        sync?: typeof syncOptions;
-        setCompilerOption?: typeof setCompilerOption;
-      }
-    }
+  interface Window {
+    MonacoEnvironment?: monaco.Environment;
+    require: MonacoLoader;
+    tsp: {
+      options?: Options;
+      compile?: typeof onCodeChange;
+      emit?: typeof onCodeChange;
+      run?: typeof runCode;
+      share?: typeof getShareableUrl;
+      reset?: typeof resetLocalStorage;
+      sync?: typeof syncOptions;
+      setCompilerOption?: typeof setCompilerOption;
+    };
+  }
 }
 
 interface Options {
@@ -40,7 +38,7 @@ interface UIOptions {
 }
 
 interface WindowOptions {
-  console?: boolean
+  console?: boolean;
 }
 
 interface HashValue {
@@ -60,13 +58,13 @@ const _tsVersionSelector = document.getElementById('ts-version-selector');
 const _editorJs = document.getElementById('editor-js');
 const _editorTs = document.getElementById('editor-ts');
 const _runCode = document.getElementById('run-code');
-const _runText = document.getElementById('run-text')
+const _runText = document.getElementById('run-text');
 const _loading = document.getElementById('loading');
 const _processing = document.getElementById('processing');
 const _shareableUrl = document.getElementById('shareable-url');
 const _optionsToggle = document.getElementById('options-toggle');
 const _options = document.getElementById('options');
-const _optionsList = (Array.prototype.slice.call(_options.getElementsByClassName('option'))).map((v: Element) => {
+const _optionsList = Array.prototype.slice.call(_options.getElementsByClassName('option')).map((v: Element) => {
   return v.firstElementChild as HTMLInputElement | HTMLSelectElement;
 });
 
@@ -74,7 +72,7 @@ let defaultOptions: Options;
 let excludeOptionsFromSharing = ['uiOptions'];
 
 window.tsp = {
-  options: {}
+  options: {},
 };
 
 function setDefaultOptions(): void {
@@ -90,15 +88,15 @@ function setDefaultOptions(): void {
       experimentalDecorators: false,
       emitDecoratorMetadata: false,
       allowNonTsExtensions: true,
-      target: monaco.languages.typescript.ScriptTarget.ES2015
+      target: monaco.languages.typescript.ScriptTarget.ES2015,
     },
     windowOptions: {
-      console: true
+      console: true,
     },
     uiOptions: {
       autoUpdateUrl: false,
-      localStorageBackup: true
-    }
+      localStorageBackup: true,
+    },
   };
 }
 
@@ -110,7 +108,7 @@ function bootstrap(config: EditorConfig): void {
   window.MonacoEnvironment = {
     getWorkerUrl: (workerId: string, label: string) => {
       return config.proxyPath;
-    }
+    },
   };
 
   window.require([config.entry], (editor?: typeof monaco.editor) => {
@@ -126,40 +124,38 @@ function changeTsVersion(version: string) {
 
 function applyVersionSelection(selectedVersion: string): void {
   const configs = getEditorConfigs()
-    .filter(config => config.hide !== true)
-    .map(config => ({
+    .filter((config) => config.hide !== true)
+    .map((config) => ({
       tsVersion: config.tsVersion,
       monacoVersion: config.monaco,
-      monacoModule: config.module
+      monacoModule: config.module,
     }));
 
-  var list = document.createElement("select");
-  list.id = "ts-version-select";
+  var list = document.createElement('select');
+  list.id = 'ts-version-select';
 
   let selectedVersionText: string;
 
   for (let config of configs) {
-      const option = document.createElement("option");
-      const tsVersion = config.tsVersion;
+    const option = document.createElement('option');
+    const tsVersion = config.tsVersion;
 
-      option.value = config.tsVersion;
+    option.value = config.tsVersion;
 
-      option.text = isNaN(parseInt(config.tsVersion[0]))
-      ? tsVersion
-      : `v${tsVersion}`;
+    option.text = isNaN(parseInt(config.tsVersion[0])) ? tsVersion : `v${tsVersion}`;
 
-      option.selected = config.tsVersion === selectedVersion;
+    option.selected = config.tsVersion === selectedVersion;
 
-      if (option.selected) {
-        selectedVersionText = option.text;
-      }
+    if (option.selected) {
+      selectedVersionText = option.text;
+    }
 
-      list.onchange = function() {
-        const el = this as HTMLSelectElement;
-        changeTsVersion(el.value);
-      };
+    list.onchange = function () {
+      const el = this as HTMLSelectElement;
+      changeTsVersion(el.value);
+    };
 
-      list.appendChild(option);
+    list.appendChild(option);
   }
 
   _tsVersionSelector.innerHTML = '';
@@ -177,12 +173,7 @@ function init(tsVersion: string): void {
   setDefaultOptions();
   expose();
 
-  let defaultValue = [
-    'function foo(bar: number): string {',
-    '    return `${bar}`;',
-    '}',
-    ''
-  ].join('\n');
+  let defaultValue = ['function foo(bar: number): string {', '    return `${bar}`;', '}', ''].join('\n');
 
   if (!backup || !backup.options || !backup.options.uiOptions) {
     useBackup = true;
@@ -221,25 +212,22 @@ function init(tsVersion: string): void {
     language: 'typescript',
     automaticLayout: true,
     minimap: {
-      enabled: false
+      enabled: false,
     },
-    selectionClipboard: false
+    selectionClipboard: false,
   });
 
   jsEditor = monaco.editor.create(_editorJs, {
-    value: [
-      '',
-      ''
-    ].join('\n'),
+    value: ['', ''].join('\n'),
     language: 'javascript',
     readOnly: true,
     automaticLayout: true,
     minimap: {
-      enabled: false
+      enabled: false,
     },
     // contextmenu: false,
     quickSuggestions: false,
-    parameterHints: {enabled: false},
+    parameterHints: { enabled: false },
     autoClosingBrackets: 'never',
     suggestOnTriggerCharacters: false,
     snippetSuggestions: 'none',
@@ -262,7 +250,7 @@ function ready(): void {
   window.onkeydown = keyBindings;
   onCodeChange();
   updateHash(true);
-  updateLocalStorage(true)
+  updateLocalStorage(true);
   fadeOut(_loading);
 }
 
@@ -357,8 +345,8 @@ function onCodeChange(event?: monaco.editor.IModelContentChangedEvent): void {
   showProcessingIndicator();
 
   getService()
-    .then(service => {
-      return service.getEmitOutput(tsEditor.getModel().uri.toString())
+    .then((service) => {
+      return service.getEmitOutput(tsEditor.getModel().uri.toString());
     }, hideProcessingIndicator)
     .then((result: EmitOutput) => {
       if (result.emitSkipped) {
@@ -371,16 +359,16 @@ function onCodeChange(event?: monaco.editor.IModelContentChangedEvent): void {
 
       return result.outputFiles[0].text;
     }, hideProcessingIndicator)
-    .then(text => {
+    .then((text) => {
       if (typeof text === 'string') {
         updateJsEditor(text);
       }
 
       return !!text;
     }, hideProcessingIndicator)
-    .then(updated => {
+    .then((updated) => {
       hideProcessingIndicator();
-    }, hideProcessingIndicator)
+    }, hideProcessingIndicator);
 }
 
 function runCode(): void {
@@ -396,10 +384,10 @@ function runCode(): void {
   }
 
   win.onunload = null;
-  win.location.href = 'about:blank'
+  win.location.href = 'about:blank';
 
   setTimeout(() => {
-    win.document.open()
+    win.document.open();
     win.document.write(getWindowCode());
     win.document.close();
     win.onunload = windowUnloaded;
@@ -423,7 +411,7 @@ function updateHash(initial?: boolean): void {
     if (!initial) {
       window.location.hash = encode(exclude(getHashValue()));
     }
-  } else if(!!window.location.hash) {
+  } else if (!!window.location.hash) {
     window.location.hash = '';
   }
 }
@@ -464,10 +452,7 @@ function updateShareableUrl(): void {
 }
 
 function getShareableUrl(): string {
-  return window.location.href
-    .replace(window.location.hash, '')
-    .replace('#', '') +
-    `#${encode(exclude(getHashValue()))}`;
+  return window.location.href.replace(window.location.hash, '').replace('#', '') + `#${encode(exclude(getHashValue()))}`;
 }
 
 function encode(value): string {
@@ -491,7 +476,7 @@ function exclude(value: HashValue): HashValue {
 function getHashValue(exclude = true): HashValue {
   const value = {
     editor: tsEditor.getValue(),
-    options: getOptions()
+    options: getOptions(),
   };
 
   return value;
@@ -524,10 +509,8 @@ function prepareWindowCode(html: string): string {
 }
 
 function getWindowCode(html?: string): string {
-  html = html !== void 0
-   ? html : options().windowOptions.console
-   ? runWindowCodeConsole : runWindowCodePlain;
-  return html.replace(/__CODE__/, jsEditor.getValue())
+  html = html !== void 0 ? html : options().windowOptions.console ? runWindowCodeConsole : runWindowCodePlain;
+  return html.replace(/__CODE__/, jsEditor.getValue());
 }
 
 function setOptions(opts: { [index: string]: any }, base = options()) {
@@ -553,8 +536,7 @@ function getBaseHref(): string {
 }
 
 function getService(): Promise<any> {
-  return monaco.languages.typescript.getTypeScriptWorker()
-    .then(worker => worker(tsEditor.getModel().uri))
+  return monaco.languages.typescript.getTypeScriptWorker().then((worker) => worker(tsEditor.getModel().uri));
 }
 
 function toggleOptions(this: HTMLElement, ev: Event): void {
@@ -597,7 +579,7 @@ function fadeOut(target: HTMLElement, interval = 5, reduce = 0.01): void {
   const script = document.createElement('script');
 
   script.onload = () => {
-      bootstrap(config);
+    bootstrap(config);
   };
 
   script.src = config.loaderUrl;

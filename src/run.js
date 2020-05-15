@@ -1,15 +1,15 @@
 if (!tsp.initialized) {
   tsp.getElement = function getElement() {
     return document.getElementById('console-content');
-  }
+  };
 
   tsp.clearConsole = function clearConsole() {
     tsp.getElement().innerHTML = '';
-  }
+  };
 
   tsp.wrapConsoleText = function wrapConsoleText(type, text) {
     return `<span class="log-${type}"><span class="icon-${type}"></span>${text}</span>`;
-  }
+  };
 
   tsp.updateConsole = function updateConsole(type, message, ...optionalParams) {
     let text = tsp.logToText(message);
@@ -21,7 +21,7 @@ if (!tsp.initialized) {
     text = tsp.wrapConsoleText(type, text);
 
     tsp.getElement().innerHTML += `${text}\n`;
-  }
+  };
 
   tsp.logToText = function logToText(message) {
     if (typeof message === 'object' && message !== null) {
@@ -29,13 +29,13 @@ if (!tsp.initialized) {
     }
 
     return tsp.escape(message);
-  }
+  };
 
   tsp.escape = function escape(text) {
     const div = document.createElement('div');
     div.innerText = text;
     return div.innerHTML;
-  }
+  };
 
   tsp.log = function log(data) {
     const message = data.data.message;
@@ -48,7 +48,7 @@ if (!tsp.initialized) {
     }
     params.unshift(type);
     tsp.updateConsole.apply(this, params);
-  }
+  };
 
   tsp.fadeOut = function fadeOut(target) {
     target.style.opacity = '1';
@@ -59,10 +59,10 @@ if (!tsp.initialized) {
         target.style.opacity = '0';
         target.style.display = 'none';
       } else {
-        target.style.opacity = (parseFloat(target.style.opacity) - 0.02) + '';
+        target.style.opacity = parseFloat(target.style.opacity) - 0.02 + '';
       }
     }, 5);
-  }
+  };
 
   tsp.originalLog = console.log;
   console.log = function log(message, ...optionalParams) {
@@ -72,10 +72,10 @@ if (!tsp.initialized) {
       log: tsp.originalLog,
       data: {
         message,
-        optionalParams
-      }
+        optionalParams,
+      },
     });
-  }
+  };
 
   tsp.originalInfo = console.info;
   console.info = function info(message, ...optionalParams) {
@@ -85,10 +85,10 @@ if (!tsp.initialized) {
       log: tsp.originalInfo,
       data: {
         message,
-        optionalParams
-      }
+        optionalParams,
+      },
     });
-  }
+  };
 
   tsp.originalWarn = console.warn;
   console.warn = function warn(message, ...optionalParams) {
@@ -98,10 +98,10 @@ if (!tsp.initialized) {
       log: tsp.originalWarn,
       data: {
         message,
-        optionalParams
-      }
+        optionalParams,
+      },
     });
-  }
+  };
 
   tsp.originalError = console.error;
   console.error = function error(message, ...optionalParams) {
@@ -111,22 +111,22 @@ if (!tsp.initialized) {
       log: tsp.originalError,
       data: {
         message,
-        optionalParams
-      }
+        optionalParams,
+      },
     });
-  }
+  };
 
   tsp.initialized = true;
 }
 
-window.onerror = function(message, url, lineNumber) {
+window.onerror = function (message, url, lineNumber) {
   tsp.log({
     name: 'error',
     type: 'error',
     // log: __originalError,
     data: {
       message,
-      optionalParams: []
-    }
+      optionalParams: [],
+    },
   });
-}
+};

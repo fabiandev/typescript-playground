@@ -1,4 +1,4 @@
-import versions = require("../versions.json");
+import versions = require('../versions.json');
 
 export interface EditorConfig {
   tsVersion: string;
@@ -14,26 +14,24 @@ export interface EditorConfig {
 
 export function getLatestVersion() {
   return Object.keys(versions)
-    .filter((key) => key !== "nightly" && !key.includes("-"))
+    .filter((key) => key !== 'nightly' && !key.includes('-'))
     .sort()
     .pop();
 }
 
 export function getEditorConfigs(): EditorConfig[] {
-  return Object
-    .keys(versions)
-    .map(version => getEditorConfig(version));
+  return Object.keys(versions).map((version) => getEditorConfig(version));
 }
 
-export function getEditorConfig(tsVersion: string = "latest"): EditorConfig {
+export function getEditorConfig(tsVersion: string = 'latest'): EditorConfig {
   const latestVersion = getLatestVersion();
   let usedVersion = tsVersion;
 
   if (usedVersion == null) {
-    usedVersion = "latest";
+    usedVersion = 'latest';
   }
 
-  if (usedVersion === "latest") {
+  if (usedVersion === 'latest') {
     usedVersion = latestVersion;
   }
 
@@ -44,7 +42,7 @@ export function getEditorConfig(tsVersion: string = "latest"): EditorConfig {
   const config = versions[usedVersion];
 
   if (config == null) {
-    throw new Error("Could not load TypeScript version");
+    throw new Error('Could not load TypeScript version');
   }
 
   const monacoUrl = `https://unpkg.com/${config.module}@${config.monaco}`;
@@ -52,12 +50,12 @@ export function getEditorConfig(tsVersion: string = "latest"): EditorConfig {
 
   return {
     ...config,
-    entry: "vs/editor/editor.main",
+    entry: 'vs/editor/editor.main',
     tsVersion: usedVersion,
     monacoUrl,
     baseUrl,
     locationUrl: `${baseUrl}/vs`,
     loaderUrl: `${baseUrl}/vs/loader.js`,
-    proxyPath: `proxy.js?baseUrl=${config.baseUrl}&locationUrl=${config.locationUrl}`
+    proxyPath: `proxy.js?baseUrl=${config.baseUrl}&locationUrl=${config.locationUrl}`,
   };
 }
