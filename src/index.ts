@@ -245,6 +245,7 @@ function init(tsVersion: string): void {
 function ready(): void {
   tsEditor.onDidChangeModelContent(debounce(onCodeChange, 100));
   _optionsToggle.onclick = toggleOptions;
+  window.onclick = onWindowClick;
   _runCode.onclick = runCode;
   initOptions();
   window.onkeydown = keyBindings;
@@ -395,14 +396,26 @@ function runCode(): void {
 }
 
 function windowOpened() {
+  if (!_runText) {
+    return;
+  }
+
   _runText.innerText = 'Run in window';
 }
 
 function windowRefreshed() {
+  if (!_runText) {
+    return;
+  }
+
   _runText.innerText = 'Run in window';
 }
 
 function windowUnloaded() {
+  if (!_runText) {
+    return;
+  }
+
   _runText.innerText = 'Run in new window';
 }
 
@@ -547,6 +560,16 @@ function toggleOptions(this: HTMLElement, ev: Event): void {
   }
 
   _options.classList.toggle('visible');
+}
+
+function onWindowClick(this: Window, e: Event): void {
+  const insideOptions = _optionsToggle.contains(e.target as HTMLElement) || _options.contains(e.target as HTMLElement);
+  
+  if (insideOptions) {
+    return;
+  }
+
+  _options.classList.remove('visible');
 }
 
 function showProcessingIndicator(): void {
