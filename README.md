@@ -2,7 +2,7 @@
   <img width="100%" src="playground.png?v=1">
 </p>
 <p align="center">
-[Click here](https://fabiandev.github.io/typescript-playground) to play
+  <a href="https://fabiandev.github.io/typescript-playground">Click here</a> to play
 </p>
 
 # TypeScript Playground
