@@ -1,132 +1,213 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf8" />
+    <base id="base" href="" />
+    <title>TypeScript Playground</title>
+    <link rel="icon" href="assets/favicon.ico" />
+    <link rel="stylesheet" href="style.css?v=1.11.0-2" />
+  </head>
 
-<head>
-  <meta charset="utf8">
-  <base id="base" href="">
-  <title>TypeScript Playground</title>
-  <link rel="icon" href="assets/favicon.ico">
-  <link rel="stylesheet" href="style.css?v=1.11.0-1">
-</head>
+  <body>
+    <div id="loading">
+      <span class="loader">
+        <span class="loader-inner"></span>
+      </span>
+    </div>
+    <div id="header" class="grid grid-pad">
+      <div class="col-1-2">
+        <div id="title">
+          TypeScript Playground
+          <span id="ts-version-selector"></span>
+          <button id="run-code">
+            &#9658;
+            <span id="run-text">Run in new window</span>
+            (ctrl+r)
+          </button>
+          <span id="options-toggle" class="icon-cog"></span>
+          <div id="options">
+            <div class="info">TypeScript <span id="ts-version"></span></div>
 
-<body>
-  <div id="loading">
-    <span class="loader">
-      <span class="loader-inner"></span>
-    </span>
-  </div>
-  <div id="header" class="grid grid-pad">
-    <div class="col-1-2">
-      <div id="title">
-        TypeScript Playground
-        <span id="ts-version-selector"></span>
-        <span id="options-toggle" class="icon-cog"></span>
-        <div id="options">
-          <div class="info">
-            TypeScript <span id="ts-version"></span>
-          </div>
+            <h6>Share</h6>
+            <div class="info">
+              <input
+                id="shareable-url"
+                type="text"
+                name="sharableUrl"
+                onClick="this.setSelectionRange(0, this.value.length)"
+              />
+            </div>
 
-          <h6>Share</h6>
-          <div class="info">
-            <input id="shareable-url" type="text" name="sharableUrl" onClick="this.setSelectionRange(0, this.value.length)">
-          </div>
+            <h6>Compiler Options:</h6>
+            <div class="option">
+              <select name="target" class="compilerOptions">
+                <option value="0">ES3</option>
+                <option value="1">ES5</option>
+                <option value="2">ES2015</option>
+                <option value="3">ES2016</option>
+                <option value="4">ES2017</option>
+                <option value="5">ES2018</option>
+                <option value="6">ESNext</option>
+              </select>
+              target
+            </div>
+            <div class="option">
+              <input
+                class="compilerOptions"
+                type="checkbox"
+                name="noImplicitAny"
+                value="true"
+              />
+              noImplicitAny
+            </div>
+            <div class="option">
+              <input
+                class="compilerOptions"
+                type="checkbox"
+                name="strictNullChecks"
+                value="true"
+              />
+              strictNullChecks
+            </div>
+            <div class="option">
+              <input
+                class="compilerOptions"
+                type="checkbox"
+                name="strictFunctionTypes"
+                value="true"
+              />
+              strictFunctionTypes
+            </div>
+            <div class="option">
+              <input
+                class="compilerOptions"
+                type="checkbox"
+                name="strictPropertyInitialization"
+                value="true"
+              />
+              strictPropertyInitialization
+            </div>
+            <div class="option">
+              <input
+                class="compilerOptions"
+                type="checkbox"
+                name="noImplicitReturns"
+                value="true"
+              />
+              noImplicitReturns
+            </div>
+            <div class="option">
+              <input
+                class="compilerOptions"
+                type="checkbox"
+                name="noImplicitThis"
+                value="true"
+              />
+              noImplicitThis
+            </div>
+            <div class="option">
+              <input
+                class="compilerOptions"
+                type="checkbox"
+                name="removeComments"
+                value="true"
+              />
+              removeComments
+            </div>
+            <div class="option">
+              <input
+                class="compilerOptions"
+                type="checkbox"
+                name="preserveConstEnums"
+                value="false"
+              />
+              preserveConstEnums
+            </div>
+            <div class="option">
+              <input
+                class="compilerOptions"
+                type="checkbox"
+                name="experimentalDecorators"
+                value="false"
+              />
+              experimentalDecorators
+            </div>
 
-          <h6>Compiler Options:</h6>
-          <div class="option">
-            <select name="target" class="compilerOptions">
-              <option value="0">ES3</option>
-              <option value="1">ES5</option>
-              <option value="2">ES2015</option>
-              <option value="3">ES2016</option>
-              <option value="4">ES2017</option>
-              <option value="5">ES2018</option>
-              <option value="6">ESNext</option>
-            </select>
-            target
-          </div>
-          <div class="option">
-            <input class="compilerOptions" type="checkbox" name="noImplicitAny" value="true">
-            noImplicitAny
-          </div>
-          <div class="option">
-            <input class="compilerOptions" type="checkbox" name="strictNullChecks" value="true">
-            strictNullChecks
-          </div>
-          <div class="option">
-            <input class="compilerOptions" type="checkbox" name="strictFunctionTypes" value="true">
-            strictFunctionTypes
-          </div>
-          <div class="option">
-            <input class="compilerOptions" type="checkbox" name="strictPropertyInitialization" value="true">
-            strictPropertyInitialization
-          </div>
-          <div class="option">
-            <input class="compilerOptions" type="checkbox" name="noImplicitReturns" value="true">
-            noImplicitReturns
-          </div>
-          <div class="option">
-            <input class="compilerOptions" type="checkbox" name="noImplicitThis" value="true">
-            noImplicitThis
-          </div>
-          <div class="option">
-            <input class="compilerOptions" type="checkbox" name="removeComments" value="true">
-            removeComments
-          </div>
-          <div class="option">
-            <input class="compilerOptions" type="checkbox" name="preserveConstEnums" value="false">
-            preserveConstEnums
-          </div>
-          <div class="option">
-            <input class="compilerOptions" type="checkbox" name="experimentalDecorators" value="false">
-            experimentalDecorators
-          </div>
+            <h6>UI Options</h6>
+            <div class="option">
+              <input
+                class="uiOptions"
+                type="checkbox"
+                name="autoUpdateUrl"
+                value="false"
+              />
+              Sync Address Bar
+            </div>
+            <div class="option">
+              <input
+                class="uiOptions"
+                type="checkbox"
+                name="localStorageBackup"
+                value="true"
+                disabled
+              />
+              Sync Local Storage
+            </div>
+            <div class="info">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
+                href=""
+                onclick="tsp.reset(true, false, event)"
+                >Reset and Reload</a
+              >
+            </div>
 
-          <h6>UI Options</h6>
-          <div class="option">
-            <input class="uiOptions" type="checkbox" name="autoUpdateUrl" value="false">
-            Sync Address Bar
-          </div>
-          <div class="option">
-            <input class="uiOptions" type="checkbox" name="localStorageBackup" value="true" disabled>
-            Sync Local Storage
-          </div>
-          <div class="info">
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="" onclick="tsp.reset(true, false, event)">Reset and Reload</a>
-          </div>
-
-          <h6>Run Window Options:</h6>
-          <div class="option">
-            <input class="windowOptions" type="checkbox" name="console" value="true">
-            Capture Console Output
+            <h6>Run Window Options:</h6>
+            <div class="option">
+              <input
+                class="windowOptions"
+                type="checkbox"
+                name="console"
+                value="true"
+              />
+              Capture Console Output
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-1-2">
-      <div id="github">
-        <a href="https://github.com/fabiandev/typescript-playground" target="_blank" title="typescript-playground on GitHub">
-            typescript-playground on <img id="ghlogo" src="assets/ghlogo.png" alt="GitHub Logo" border="0">
+      <div class="col-1-2">
+        <div id="github">
+          <a
+            href="https://github.com/fabiandev/typescript-playground"
+            target="_blank"
+            title="typescript-playground on GitHub"
+          >
+            typescript-playground on
+            <img
+              id="ghlogo"
+              src="assets/ghlogo.png"
+              alt="GitHub Logo"
+              border="0"
+            />
           </a>
-      </div>
-    </div>
-  </div>
-  <div id="playground" class="grid grid-pad">
-    <div class="col-1-2 editor-container">
-      <div class="editor" id="editor-ts"></div>
-    </div>
-    <div class="col-1-2 editor-container">
-      <div id="processing">
-        <div class="spinner">
-          <div class="double-bounce1"></div>
-          <div class="double-bounce2"></div>
         </div>
       </div>
-      <div class="editor-footer" id="run-code"><span id="run-text">Run in new window</span> (ctrl+r)</div>
-      <div class="editor" id="editor-js"></div>
     </div>
-  </div>
+    <div id="playground" class="grid grid-pad">
+      <div class="col-1-2 editor-container">
+        <div class="editor" id="editor-ts"></div>
+      </div>
+      <div class="col-1-2 editor-container">
+        <div id="processing">
+          <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+          </div>
+        </div>
+        <!-- <div class="editor-footer" id="run-code"><span id="run-text">Run in new window</span> (ctrl+r)</div> -->
+        <div class="editor" id="editor-js"></div>
+      </div>
+    </div>
 
-  <script src="app.js?v=1.11.0-1"></script>
-</body>
-
+    <script src="app.js?v=1.11.0-2"></script>
+  </body>
 </html>
