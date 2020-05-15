@@ -1,14 +1,10 @@
+# TypeScript Playground
+
+Start playing [here](https://fabiandev.github.io/typescript-playground).
+
 <p align="center">
   <img width="100%" src="playground.png?v=1">
 </p>
-
-# TypeScript Playground
-
-A playground for TypeScript with the [Monaco Editor](https://github.com/Microsoft/monaco-editor).
-
-## Play
-
-See the playground in action: https://fabiandev.github.io/typescript-playground
 
 > A shareable URL can be obtained from the settings of the editor.
 
