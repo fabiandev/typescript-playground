@@ -22,6 +22,7 @@ declare global {
       reset?: typeof resetLocalStorage;
       sync?: typeof syncOptions;
       setCompilerOption?: typeof setCompilerOption;
+      changeTsVersion?: typeof changeTsVersion;
     };
   }
 }
@@ -264,6 +265,7 @@ function expose() {
   window.tsp.reset = resetLocalStorage;
   window.tsp.sync = syncOptions;
   window.tsp.setCompilerOption = setCompilerOption;
+  window.tsp.changeTsVersion = changeTsVersion;
 }
 
 function setCompilerOption(name: string, value: any): void {
