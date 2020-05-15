@@ -1,8 +1,9 @@
 <p align="center">
   <img width="100%" src="playground.png?v=1">
 </p>
-
-[Click here](https://fabiandev.github.io/typescript-playground) to play.
+<p align="center">
+[Click here](https://fabiandev.github.io/typescript-playground) to play
+</p>
 
 # TypeScript Playground
 
