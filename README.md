@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="620" src="typescript-playground.png">
+</p>
+
 # TypeScript Playground
 
 A playground for TypeScript with the [Monaco Editor](https://github.com/Microsoft/monaco-editor).
