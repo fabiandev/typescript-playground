@@ -20,5 +20,6 @@
   },
   "3.8.3": { "monaco": "3.8.3", "module": "@typescript-deploys/monaco-editor" },
   "3.9.2": { "monaco": "3.9.2", "module": "@typescript-deploys/monaco-editor" },
+  "4.0.0-beta": { "monaco": "4.0.0-beta", "module": "@typescript-deploys/monaco-editor" },
   "nightly": { "monaco": "next", "module": "@typescript-deploys/monaco-editor" }
 }
