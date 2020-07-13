@@ -1,6 +1,6 @@
 {
   "name": "typescript-playground",
-  "version": "1.11.0-2",
+  "version": "1.11.0",
   "description": "TypeScript Playground",
   "dependencies": {},
   "devDependencies": {
